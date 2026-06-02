@@ -1,70 +1,50 @@
 import React, { useState, useEffect } from 'react';
-
-// Unified Menu dataset extracted from PDF and User Overrides
-const INITIAL_MENU = [
-  // STEWS
-  { id: 's1', name: 'Veg Stew', price: 100, category: 'STEWS', isVeg: true, time: '45 min', initialRating: 4.5, available: true },
-  { id: 's2', name: 'Chicken Stew', price: 150, category: 'STEWS', isVeg: false, time: '45 min', initialRating: 4.7, available: true },
-  { id: 's3', name: 'Beef Stew', price: 150, category: 'STEWS', isVeg: false, time: '45 min', initialRating: 4.6, available: true },
-  { id: 's4', name: 'Prawns Stew', price: 200, category: 'STEWS', isVeg: false, time: '45 min', initialRating: 4.8, available: true },
-  { id: 's5', name: 'Fish Stew', price: 300, category: 'STEWS', isVeg: false, time: '45 min', initialRating: 4.9, available: true },
-
-  // APPETIZERS
-  { id: 'a1', name: 'Chicken Nuggets', price: 120, category: 'APPETIZERS', isVeg: false, time: '20 min', initialRating: 4.4, available: true },
-  { id: 'a2', name: 'Crab Claw', price: 200, category: 'APPETIZERS', isVeg: false, time: '25 min', initialRating: 4.6, available: true },
-  { id: 'a3', name: 'Fish Finger', price: 150, category: 'APPETIZERS', isVeg: false, time: '20 min', initialRating: 4.5, available: true },
-  { id: 'a4', name: 'Fish Fries', price: 200, category: 'APPETIZERS', isVeg: false, time: '20 min', initialRating: 4.7, available: true },
-  { id: 'a5', name: 'French Fries', price: 100, category: 'APPETIZERS', isVeg: true, time: '15 min', initialRating: 4.3, available: true },
-  { id: 'a6', name: 'Prawns Lollipop', price: 200, category: 'APPETIZERS', isVeg: false, time: '25 min', initialRating: 4.8, available: true },
-  { id: 'a7', name: 'Veg Nuggets', price: 100, category: 'APPETIZERS', isVeg: true, time: '15 min', initialRating: 4.1, available: true },
-  { id: 'a8', name: 'Crispy Happy Potato', price: 100, category: 'APPETIZERS', isVeg: true, time: '20 min', initialRating: 4.5, available: true },
-
-  // MAGGIE
-  { id: 'm1', name: 'Maggie Noodles', price: 70, category: 'MAGGIE', isVeg: true, time: '10 min', initialRating: 4.2, available: true },
-  { id: 'm2', name: 'Egg Maggie', price: 100, category: 'MAGGIE', isVeg: false, time: '12 min', initialRating: 4.4, available: true },
-  { id: 'm3', name: 'Veg Maggie', price: 80, category: 'MAGGIE', isVeg: true, time: '12 min', initialRating: 4.3, available: true },
-  { id: 'm4', name: 'Chicken Maggie', price: 120, category: 'MAGGIE', isVeg: false, time: '15 min', initialRating: 4.6, available: false },
-
-  // KERALA BREADS
-  { id: 'b1', name: 'Chapathi', price: 15, category: 'KERALA BREADS', isVeg: true, time: '10 min', initialRating: 4.3, available: true },
-  { id: 'b2', name: 'Soft Puttu', price: 20, category: 'KERALA BREADS', isVeg: true, time: '15 min', initialRating: 4.5, available: true },
-  { id: 'b3', name: 'Wheat Puttu', price: 20, category: 'KERALA BREADS', isVeg: true, time: '15 min', initialRating: 4.4, available: true },
-  { id: 'b4', name: 'Idiyappam', price: 15, category: 'KERALA BREADS', isVeg: true, time: '15 min', initialRating: 4.6, available: true },
-  { id: 'b5', name: 'Porotta', price: 25, category: 'KERALA BREADS', isVeg: true, time: '12 min', initialRating: 4.9, available: true },
-  { id: 'b6', name: 'Appam', price: 15, category: 'KERALA BREADS', isVeg: true, time: '12 min', initialRating: 4.5, available: true },
-  { id: 'b7', name: 'Healthy Wheat Puttu', price: 20, category: 'KERALA BREADS', isVeg: true, time: '15 min', initialRating: 4.2, available: false },
-
-  // MEALS
-  { id: 'ml1', name: 'Veg Meals', price: 80, category: 'MEALS', isVeg: true, time: '20 min', initialRating: 4.5, available: true },
-  { id: 'ml2', name: 'Fish Meals', price: 100, category: 'MEALS', isVeg: false, time: '20 min', initialRating: 4.8, available: true },
-
-  // SAMPLE OTHER ITEMS FROM PDF SET TO UNAVAILABLE
-  { id: 'pdf1', name: 'Chicken Fried Rice', price: 220, category: 'RICE BOWLS', isVeg: false, time: '25 min', initialRating: 4.6, available: false },
-  { id: 'pdf2', name: 'Beef Dry Fry', price: 300, category: 'BEEF DELIGHTS', isVeg: false, time: '30 min', initialRating: 4.9, available: false },
-  { id: 'pdf4', name: 'Fresh Lime', price: 40, category: 'REFRESHERS', isVeg: true, time: '5 min', initialRating: 4.4, available: true }
-];
-
-const CATEGORIES = ['ALL', 'STEWS', 'APPETIZERS', 'MAGGIE', 'KERALA BREADS', 'MEALS'];
+import { INITIAL_MENU } from './data/menuData';
+import PromoBanners from './components/PromoBanners';
+import CategoryTabs from './components/CategoryTabs';
+import AIChatBot from './components/AIChatBot';
+import CartPage from './components/CartPage';
 
 export default function App() {
-  const [view, setView] = useState('login'); 
+  const [view, setView] = useState('login'); // login | home | cart
   const [username, setUsername] = useState('');
   const [menuItems, setMenuItems] = useState(INITIAL_MENU);
-  const [cart, setCart] = useState({}); 
+  const [cart, setCart] = useState({});
   
+
+  // Dynamic Query Filter Hooks
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [vegOnly, setVegOnly] = useState(false);
-  const [showListedOnly, setShowListedOnly] = useState(false); 
-  const [sortBy, setSortBy] = useState('default'); 
+  const [showActiveOnly, setShowActiveOnly] = useState(false);
+  const [ordered, setOrdered] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(0);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('kampify_user');
-    if (savedUser) {
-      setUsername(savedUser);
-      setView('home');
+    const cachedUser = localStorage.getItem('kampify_user');
+    if (cachedUser) { setUsername(cachedUser); setView('home'); }
+    const savedOrdered = localStorage.getItem('kampify_ordered') === 'true';
+    const savedSeconds = parseInt(localStorage.getItem('kampify_seconds') || '0');
+    const savedAt = parseInt(localStorage.getItem('kampify_ordered_at') || '0');
+    if (savedOrdered && savedSeconds > 0 && savedAt > 0) {
+      const elapsed = Math.floor((Date.now() - savedAt) / 1000);
+      const remaining = savedSeconds - elapsed;
+      if (remaining > 0) { setOrdered(true); setSecondsLeft(remaining); }
     }
   }, []);
+
+  useEffect(() => {
+    if (!ordered) return;
+    const interval = setInterval(() => {
+      setSecondsLeft(s => {
+        const next = s <= 1 ? 0 : s - 1;
+        localStorage.setItem('kampify_seconds', String(next));
+        if (next === 0) clearInterval(interval);
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [ordered]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -74,292 +54,211 @@ export default function App() {
     }
   };
 
-  const updateCart = (id, delta) => {
+  const updateCart = (id, change) => {
     setCart(prev => {
-      const currentQty = prev[id] || 0;
-      const newQty = currentQty + delta;
       const updated = { ...prev };
-      if (newQty <= 0) {
-        delete updated[id];
-      } else {
-        updated[id] = newQty;
-      }
+      const currentQty = updated[id] || 0;
+      const calculatedQty = currentQty + change;
+      if (calculatedQty <= 0) delete updated[id];
+      else updated[id] = calculatedQty;
       return updated;
     });
   };
 
-  const handleRateItem = (id, newRating) => {
-    setMenuItems(prev => prev.map(item => {
-      if (item.id === id) {
-        return { ...item, initialRating: parseFloat(newRating.toFixed(1)) };
-      }
-      return item;
-    }));
+  const handleRateItem = (id, rating) => {
+    setMenuItems(prev => prev.map(item => item.id === id ? { ...item, initialRating: rating } : item));
   };
 
-  const getCartTotal = () => {
-    return Object.entries(cart).reduce((total, [id, qty]) => {
-      const item = menuItems.find(m => m.id === id);
-      return total + (item ? item.price * qty : 0);
-    }, 0);
-  };
+  const getCartCount = () => Object.values(cart).reduce((a, b) => a + b, 0);
 
-  const getCartCount = () => {
-    return Object.values(cart).reduce((sum, q) => sum + q, 0);
-  };
-
-  const handleProceedOrder = () => {
-    if (getCartCount() === 0) return;
-    
-    let message = `*Cafe Kampify Order*\n`;
-    message += `*Customer Name:* ${username}\n`;
-    message += `-------------------------\n`;
-    
-    Object.entries(cart).forEach(([id, qty]) => {
-      const item = menuItems.find(m => m.id === id);
-      if (item) {
-        message += `• ${item.name} x ${qty} = ₹${item.price * qty}\n`;
-      }
-    });
-    
-    message += `-------------------------\n`;
-    message += `*Total Amount:* ₹${getCartTotal()}\n\n`;
-    message += `_Please arrange preparation. Order placed via web client._`;
-
-    const whatsappUrl = `https://wa.me/919901299899?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  };
-
-  const filteredItems = menuItems.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'ALL' || item.category === selectedCategory;
-    const matchesVeg = !vegOnly || item.isVeg;
-    const matchesAvailability = !showListedOnly || item.available;
-    return matchesSearch && matchesCategory && matchesVeg && matchesAvailability;
-  }).sort((a, b) => {
-    if (sortBy === 'priceLow') return a.price - b.price;
-    if (sortBy === 'priceHigh') return b.price - a.price;
-    if (sortBy === 'rating') return b.initialRating - a.initialRating;
-    return 0; 
+  const processedDishes = menuItems.filter(item => {
+    const matchSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchCat = selectedCategory === 'ALL' || item.category === selectedCategory;
+    const matchVeg = !vegOnly || item.isVeg;
+    const matchAvail = !showActiveOnly || item.available;
+    return matchSearch && matchCat && matchVeg && matchAvail;
   });
 
+  if (view === 'cart') {
+    return (
+      <CartPage 
+        cart={cart} 
+        menuItems={menuItems} 
+        updateCart={updateCart} 
+        username={username}
+        onBack={() => setView('home')}
+        ordered={ordered}
+        setOrdered={setOrdered}
+        setSecondsLeft={setSecondsLeft}
+        secondsLeft={secondsLeft}
+      />
+    );
+  }
+
   return (
-    <div style={styles.appContainer}>
-      {/* Dynamic Global Engine Injection targeting responsive layout crops */}
+    <div style={{ ...styles.appWrapper, fontSize: `${16}px` }}>
+      {/* Absolute Master Reset Injection Overrides */}
       <style>{`
-        * {
-          box-sizing: border-box !important;
-          margin: 0;
-          padding: 0;
-        }
-        body {
-          background-color: #a4d4cd;
-          margin: 0;
-          padding: 0;
-        }
-        .hide-scroll::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scroll {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
+        * { box-sizing: border-box !important; margin: 0; padding: 0; }
+        body { background-color: #022319; font-family: system-ui, -apple-system, sans-serif; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
       `}</style>
 
       {view === 'login' ? (
-        <div style={styles.loginScreen}>
-          <div style={styles.loginHeaderVisual}>
-            <div style={styles.saladArt}>🥗</div>
-          </div>
-          <h1 style={styles.loginTitle}>Hey!<br />Foodie</h1>
-          <p style={styles.loginSubtitle}>Let's find your favorite food.</p>
-          
+        <div style={styles.loginContainer}>
+          <div style={styles.loginArt}>🥗</div>
+          <h1 style={styles.loginHeading}>Hey!<br />Foodie</h1>
+          <p style={styles.loginBody}>Let's find your favorite food.</p>
           <form onSubmit={handleLogin} style={styles.loginForm}>
             <input 
               type="text" 
               placeholder="Enter your name..." 
               value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
-              style={styles.loginInput}
-              required
+              onChange={e => setUsername(e.target.value)} 
+              style={styles.loginInput} 
+              required 
             />
-            <button type="submit" style={styles.loginButton}>
-              GET STARTED <span style={{ marginLeft: 8 }}>➔</span>
-            </button>
+            <button type="submit" style={styles.loginSubmit}>GET STARTED ➔</button>
           </form>
         </div>
       ) : (
-        <div style={styles.mainScreen}>
-          <header style={styles.header}>
-            <div>
-              <p style={styles.welcomeGreeting}>Hello, {username}!</p>
-              <h2 style={styles.brandTitle}>Cafe Kampify</h2>
-            </div>
-            <div style={styles.cartIconBadge} onClick={handleProceedOrder}>
-              🛍️
-              {getCartCount() > 0 && <span style={styles.badgeCount}>{getCartCount()}</span>}
-            </div>
-          </header>
-
-          {/* Horizontal Flyer */}
-          <div style={styles.flyerContainer}>
-            <div className="hide-scroll" style={styles.flyerTrack}>
-              <div style={styles.flyerCard}>
-                ✨ <b>Today's Special:</b> Authentic Kerala Flavors prepared fresh on-order!
+        <div style={styles.mainFeed}>
+          {/* Swiggy Image 3 Style Top Header Integration Block */}
+          <div style={styles.topGreenSection}>
+            <header style={styles.brandHeader}>
+              <div>
+                <p style={styles.welcomeText}>Hello, {username}!</p>
+                <h2 style={styles.brandName}>Cafe Kampify</h2>
               </div>
-              <div style={styles.flyerCard}>
-                ⏳ <b>Patience is Rewarded:</b> Every dish is prepared fresh. Please allow 45 mins. [cite: 3, 5]
+              
+              {/* Accessibility Font Switcher Layout */}
+              <div style={styles.accessibilityGroup}>
+                <div onClick={() => setView('cart')} style={styles.cartFABIcon}>
+                  🛒{getCartCount() > 0 && <span style={styles.cartCountBadge}>{getCartCount()}</span>}
+                </div>
               </div>
-              <div style={styles.flyerCard}>
-                🍲 <b>Signature Stews:</b> Try our house-special Veg & Prawn Stews today.
+            </header>
+
+            {/* Custom Interactive Search Panel Wrapper */}
+            <div style={styles.searchRowContainer}>
+              <div style={styles.searchBarWrapper}>
+                <span style={styles.searchIcon}>🔍</span>
+                <input 
+                  type="text" 
+                  placeholder="Search for 'Pizza' or Stews..." 
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  style={styles.searchInputField}
+                />
+                <span style={styles.micIcon}>🎙️</span>
               </div>
-            </div>
-          </div>
-
-          <div style={styles.searchWrapper}>
-            <input 
-              type="text" 
-              placeholder="🔍 Search exquisite food dishes..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={styles.searchInput}
-            />
-          </div>
-
-          {/* Controls Panel */}
-          <div style={styles.controlsPanel}>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-              <button 
+              
+              {/* Image 3 Native Box Style Veg Switch */}
+              <div 
                 onClick={() => setVegOnly(!vegOnly)} 
-                style={{ ...styles.toggleButton, backgroundColor: vegOnly ? '#0d6e6b' : '#fff', color: vegOnly ? '#fff' : '#333' }}
+                style={{ ...styles.vegToggleSquare, backgroundColor: vegOnly ? '#10805c' : '#fff' }}
               >
-                🌱 Veg Only
-              </button>
+                <span style={{ fontSize: '10px', fontWeight: '800', color: vegOnly ? '#fff' : '#444' }}>VEG</span>
+                <div style={{ ...styles.vegDotBox, borderColor: vegOnly ? '#fff' : '#2e7d32' }}>
+                  <div style={{ ...styles.vegInnerDot, backgroundColor: '#2e7d32' }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Promo Banner Rows Carousel Element */}
+            <PromoBanners ordered={ordered} secondsLeft={secondsLeft} />
+          </div>
+
+          <div style={styles.bottomWhiteSection}>
+            {/* Image 2 Swiggy Style Interactive Category Tabs */}
+            <CategoryTabs selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+
+            {/* Global Auxiliary Filters Menu Row */}
+            <div style={styles.filterMenuRow}>
               <button 
-                onClick={() => setShowListedOnly(!showListedOnly)} 
-                style={{ ...styles.toggleButton, backgroundColor: showListedOnly ? '#0d6e6b' : '#fff', color: showListedOnly ? '#fff' : '#333' }}
+                onClick={() => setShowActiveOnly(!showActiveOnly)} 
+                style={{ ...styles.auxFilterBtn, backgroundColor: showActiveOnly ? '#04432f' : '#f1f5f9', color: showActiveOnly ? '#fff' : '#333' }}
               >
                 📦 Active Stock Only
               </button>
+              <span style={{ fontSize: '12px', color: '#666' }}>Dishes listed: {processedDishes.length}</span>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: 13, color: '#666' }}>Sort By:</span>
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={styles.selectDropdown}>
-                <option value="default">Menu Order</option>
-                <option value="priceLow">Price: Low to High</option>
-                <option value="priceHigh">Price: High to Low</option>
-                <option value="rating">Top Rated</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Horizontal Categories Grid Navigation */}
-          <div className="hide-scroll" style={styles.categoryScroller}>
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                style={{
-                  ...styles.categoryTab,
-                  backgroundColor: selectedCategory === cat ? '#0d6e6b' : '#eef6f5',
-                  color: selectedCategory === cat ? '#fff' : '#555',
-                  fontWeight: selectedCategory === cat ? '600' : '400'
-                }}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Food Cards Grid */}
-          <div style={styles.productGrid}>
-            {filteredItems.map(item => {
-              const qty = cart[item.id] || 0;
-              return (
-                <div 
-                  key={item.id} 
-                  style={{
-                    ...styles.foodCard,
-                    opacity: item.available ? 1 : 0.6,
-                  }}
-                >
-                  <div style={styles.cardHeaderRow}>
-                    <div style={{
-                      ...styles.vegIndicatorBox, 
-                      borderColor: item.isVeg ? '#2e7d32' : '#c62828'
-                    }}>
-                      <div style={{
-                        ...styles.vegIndicatorDot, 
-                        backgroundColor: item.isVeg ? '#2e7d32' : '#c62828'
-                      }} />
+            {/* High Fidelity Food Cards Responsive Matrix Grid */}
+            <div style={styles.cardMatrixGrid}>
+              {processedDishes.map(dish => {
+                const itemQuantity = cart[dish.id] || 0;
+                return (
+                  <div 
+                    key={dish.id} 
+                    style={{ ...styles.foodCard, opacity: dish.available ? 1 : 0.55 }}
+                  >
+                    <div style={styles.cardHeaderArea}>
+                      <div style={{ ...styles.vegSquareIndicator, borderColor: dish.isVeg ? '#2e7d32' : '#c62828' }}>
+                        <div style={{ ...styles.vegCircleDot, backgroundColor: dish.isVeg ? '#2e7d32' : '#c62828' }} />
+                      </div>
+                      {!dish.available && <span style={styles.soldOutBadge}>Sold Out</span>}
                     </div>
-                    {!item.available && <span style={styles.unavailBadge}>Unavailable</span>}
-                  </div>
 
-                  <div style={styles.foodImagePlaceholder}>
-                    {item.isVeg ? '🥗' : '🍗'}
-                  </div>
+                    <div style={styles.cardImageWrapper}>
+                      <img src={dish.image} alt={dish.name} style={styles.cardVisualAsset} />
+                    </div>
 
-                  <div style={styles.cardMetaBody}>
-                    <h4 style={styles.foodItemTitle}>{item.name}</h4>
+                    <h4 style={{ ...styles.cardFoodTitle, fontSize: `${16}px` }}>{dish.name}</h4>
                     
-                    <div style={styles.timeRatingRow}>
-                      <span style={styles.timeTag}>🕒 {item.time}</span>
-                      <span style={styles.ratingText}>⭐ {item.initialRating}</span>
+                    <div style={styles.cardDetailsRow}>
+                      <span style={{ fontSize: '11px', color: '#64748b' }}>🕒 {dish.time}</span>
+                      <span style={styles.cardRating}>⭐ {dish.initialRating}</span>
                     </div>
 
-                    {/* Interactive User Stars Interface */}
-                    <div style={styles.ratingSelectRow}>
+                    {/* Quality Star Rating Feedback Handler Block */}
+                    <div style={styles.interactiveStarsBar}>
                       {[1, 2, 3, 4, 5].map(star => (
                         <span 
                           key={star} 
-                          onClick={() => item.available && handleRateItem(item.id, star)}
-                          style={{
-                            ...styles.rateStarItem,
-                            color: star <= Math.round(item.initialRating) ? '#f59e0b' : '#cbd5e1'
-                          }}
+                          onClick={() => dish.available && handleRateItem(dish.id, star)}
+                          style={{ ...styles.clickStar, color: star <= Math.round(dish.initialRating) ? '#f59e0b' : '#cbd5e1' }}
                         >
                           ★
                         </span>
                       ))}
                     </div>
 
-                    <div style={styles.cardPricingActionRow}>
-                      <span style={styles.priceValue}>₹{item.price}</span>
+                    <div style={styles.cardActionFooter}>
+                      <span style={styles.cardPrice}>₹{dish.price}</span>
                       
-                      {!item.available ? (
-                        <span style={styles.soldOutText}>Sold Out</span>
-                      ) : qty === 0 ? (
-                        <button 
-                          onClick={() => updateCart(item.id, 1)}
-                          style={styles.addCartBtn}
-                        >
-                          ADD +
-                        </button>
+                      {!dish.available ? (
+                        <span style={styles.disabledText}>Unavailable</span>
+                      ) : itemQuantity === 0 ? (
+                        <button onClick={() => updateCart(dish.id, 1)} style={styles.initialAddBtn}>ADD +</button>
                       ) : (
-                        <div style={styles.counterControlWrapper}>
-                          <button onClick={() => updateCart(item.id, -1)} style={styles.counterMathBtn}>−</button>
-                          <span style={styles.counterNumericText}>{qty}</span>
-                          <button onClick={() => updateCart(item.id, 1)} style={styles.counterMathBtn}>+</button>
+                        <div style={styles.mathQuantityController}>
+                          <button onClick={() => updateCart(dish.id, -1)} style={styles.qtyMathActionBtn}>−</button>
+                          <span style={styles.qtyNumericDisplay}>{itemQuantity}</span>
+                          <button onClick={() => updateCart(dish.id, 1)} style={styles.qtyMathActionBtn}>+</button>
                         </div>
                       )}
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
-          {/* Sticky Checkout Bar */}
+          {/* Integrated AI Support Engine Float Layer */}
+          <AIChatBot menuItems={menuItems} updateCart={updateCart} />
+
+          {/* Sticky Order Now Bar */}
           {getCartCount() > 0 && (
-            <div style={styles.stickyCheckoutBar}>
-              <div style={styles.checkoutMetaSummary}>
-                <span style={styles.checkoutCountText}>{getCartCount()} items selected</span>
-                <span style={styles.checkoutTotalPrice}>₹{getCartTotal()}</span>
+            <div style={styles.stickyOrderBar}>
+              <div style={styles.stickyOrderInfo}>
+                <span style={styles.stickyCount}>{getCartCount()} item{getCartCount() > 1 ? 's' : ''}</span>
+                <span style={styles.stickyLabel}>in your basket</span>
               </div>
-              <button onClick={handleProceedOrder} style={styles.whatsappSubmitBtn}>
-                Order via WhatsApp ➔
+              <button onClick={() => setView('cart')} style={styles.stickyOrderBtn}>
+                View Order ➔
               </button>
             </div>
           )}
@@ -369,376 +268,81 @@ export default function App() {
   );
 }
 
-// Fixed Responsive UI Styling Properties
+// Fluid Responsive Styling Configuration
 const styles = {
-  appContainer: {
+  appWrapper: {
     width: '100%',
-    maxWidth: '480px',
+    maxWidth: '100%',
+    minWidth: '10%',
     margin: '0 auto',
     minHeight: '100vh',
-    backgroundColor: '#d2e7e4',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    color: '#2d3748',
-    boxShadow: '0 4px 25px rgba(0,0,0,0.1)',
+    backgroundColor: '#04432f',
     position: 'relative',
     overflowX: 'hidden',
+    display: 'flex',
+    flexDirection: 'column'
   },
-  loginScreen: {
-    backgroundColor: '#0d6e6b',
+  loginContainer: {
+    backgroundColor: '#04432f',
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    padding: '24px',
-    color: '#fff',
+    padding: '32px',
+    color: '#fff'
   },
-  loginHeaderVisual: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '20px',
-  },
-  saladArt: {
-    fontSize: '76px',
-    background: 'rgba(255,255,255,0.12)',
-    borderRadius: '50%',
-    width: '110px',
-    height: '110px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginTitle: {
-    fontSize: '44px',
-    fontWeight: '800',
-    lineHeight: '1.1',
-    margin: '0 0 8px 0',
-  },
-  loginSubtitle: {
-    fontSize: '16px',
-    color: '#b2dfdb',
-    margin: '0 0 32px 0',
-  },
-  loginForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '14px',
-  },
-  loginInput: {
-    padding: '16px 20px',
-    borderRadius: '30px',
-    border: 'none',
-    fontSize: '16px',
-    outline: 'none',
-    backgroundColor: '#fff',
-    color: '#333',
-  },
-  loginButton: {
-    padding: '16px',
-    borderRadius: '30px',
-    border: 'none',
-    backgroundColor: '#fff',
-    color: '#0d6e6b',
-    fontWeight: '700',
-    fontSize: '15px',
-    cursor: 'pointer',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-  },
-  mainScreen: {
-    padding: '16px 14px 110px 14px',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '16px',
-  },
-  welcomeGreeting: {
-    fontSize: '13px',
-    color: '#555',
-    margin: 0,
-  },
-  brandTitle: {
-    fontSize: '22px',
-    fontWeight: '800',
-    color: '#0d6e6b',
-    margin: 0,
-  },
-  cartIconBadge: {
-    fontSize: '24px',
-    cursor: 'pointer',
-    position: 'relative',
-    backgroundColor: '#fff',
-    padding: '8px',
-    borderRadius: '50%',
-    boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
-  },
-  badgeCount: {
-    position: 'absolute',
-    top: '-4px',
-    right: '-4px',
-    backgroundColor: '#e53e3e',
-    color: '#fff',
-    borderRadius: '50%',
-    width: '18px',
-    height: '18px',
-    fontSize: '10px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: '700',
-  },
-  flyerContainer: {
-    backgroundColor: '#0d6e6b',
-    borderRadius: '14px',
-    padding: '12px',
-    color: '#fff',
-    overflow: 'hidden',
-    marginBottom: '16px',
-  },
-  flyerTrack: {
-    display: 'flex',
-    overflowX: 'auto',
-    scrollSnapType: 'x mandatory',
-    WebkitOverflowScrolling: 'touch',
-    gap: '12px',
-  },
-  flyerCard: {
-    flex: '0 0 100%',
-    scrollSnapAlign: 'start',
-    fontSize: '13px',
-    lineHeight: '1.4',
-  },
-  searchWrapper: {
-    marginBottom: '14px',
-  },
-  searchInput: {
-    width: '100%',
-    padding: '12px 16px',
-    borderRadius: '25px',
-    border: '1px solid #cce2df',
-    backgroundColor: '#fff',
-    fontSize: '14px',
-    outline: 'none',
-  },
-  controlsPanel: {
-    backgroundColor: '#fff',
-    borderRadius: '12px',
-    padding: '12px',
-    marginBottom: '16px',
-  },
-  toggleButton: {
-    padding: '6px 12px',
-    borderRadius: '20px',
-    border: '1px solid #cce2df',
-    fontSize: '11px',
-    fontWeight: '600',
-    cursor: 'pointer',
-  },
-  selectDropdown: {
-    padding: '4px 8px',
-    borderRadius: '8px',
-    border: '1px solid #cce2df',
-    backgroundColor: '#fff',
-    fontSize: '12px',
-    outline: 'none',
-  },
-  categoryScroller: {
-    display: 'flex',
-    gap: '8px',
-    overflowX: 'auto',
-    marginBottom: '16px',
-    paddingBottom: '2px',
-    WebkitOverflowScrolling: 'touch',
-  },
-  categoryTab: {
-    padding: '8px 16px',
-    borderRadius: '20px',
-    border: 'none',
-    fontSize: '12px',
-    whiteSpace: 'nowrap',
-    cursor: 'pointer',
-  },
-  productGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '10px',
-  },
-  foodCard: {
-    backgroundColor: '#fff',
-    borderRadius: '16px',
-    padding: '10px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  cardHeaderRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '6px',
-  },
-  vegIndicatorBox: {
-    width: '14px',
-    height: '14px',
-    border: '1.5px solid',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '2px',
-  },
-  vegIndicatorDot: {
-    width: '6px',
-    height: '6px',
-    borderRadius: '50%',
-  },
-  unavailBadge: {
-    backgroundColor: '#fee2e2',
-    color: '#ef4444',
-    fontSize: '9px',
-    padding: '1px 5px',
-    borderRadius: '8px',
-    fontWeight: '600',
-  },
-  foodImagePlaceholder: {
-    height: '80px',
-    backgroundColor: '#f8fafc',
-    borderRadius: '10px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '36px',
-    marginBottom: '8px',
-  },
-  cardMetaBody: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-  },
-  foodItemTitle: {
-    fontSize: '14px',
-    fontWeight: '700',
-    margin: '0 0 4px 0',
-    color: '#1a202c',
-    lineHeight: '1.2',
-  },
-  timeRatingRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '6px',
-  },
-  timeTag: {
-    fontSize: '10px',
-    color: '#718096',
-  },
-  ratingText: {
-    fontSize: '11px',
-    fontWeight: '700',
-    color: '#d97706',
-  },
-  ratingSelectRow: {
-    display: 'flex',
-    gap: '2px',
-    marginBottom: '10px',
-  },
-  rateStarItem: {
-    cursor: 'pointer',
-    fontSize: '14px',
-    userSelect: 'none',
-  },
-  cardPricingActionRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
-  priceValue: {
-    fontSize: '15px',
-    fontWeight: '800',
-    color: '#0d6e6b',
-  },
-  addCartBtn: {
-    backgroundColor: '#eef6f5',
-    color: '#0d6e6b',
-    border: 'none',
-    padding: '6px 12px',
-    borderRadius: '12px',
-    fontWeight: '700',
-    fontSize: '11px',
-    cursor: 'pointer',
-  },
-  counterControlWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: '#0d6e6b',
-    borderRadius: '12px',
-    padding: '2px 4px',
-  },
-  counterMathBtn: {
-    background: 'none',
-    border: 'none',
-    color: '#fff',
-    width: '20px',
-    height: '20px',
-    fontSize: '14px',
-    cursor: 'pointer',
-    fontWeight: '700',
-  },
-  counterNumericText: {
-    color: '#fff',
-    padding: '0 4px',
-    fontSize: '12px',
-    fontWeight: '600',
-    minWidth: '14px',
-    textAlign: 'center',
-  },
-  soldOutText: {
-    fontSize: '11px',
-    color: '#a0aec0',
-    fontWeight: '600',
-  },
-  stickyCheckoutBar: {
-    position: 'fixed',
-    bottom: '12px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: 'calc(100% - 24px)',
-    maxWidth: '456px',
-    backgroundColor: '#fff',
-    borderRadius: '16px',
-    boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
-    padding: '12px 16px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    zIndex: 100,
-  },
-  checkoutMetaSummary: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  checkoutCountText: {
-    fontSize: '11px',
-    color: '#718096',
-  },
-  checkoutTotalPrice: {
-    fontSize: '18px',
-    fontWeight: '800',
-    color: '#0d6e6b',
-  },
-  whatsappSubmitBtn: {
-    backgroundColor: '#25D366',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 14px',
-    borderRadius: '12px',
-    fontWeight: '700',
-    fontSize: '13px',
-    cursor: 'pointer',
-  }
+  loginArt: { fontSize: '80px', textAlign: 'center', marginBottom: '16px' },
+  loginHeading: { fontSize: '46px', fontWeight: '900', lineHeight: '1.1', marginBottom: '8px' },
+  loginBody: { fontSize: '16px', color: '#a3b8b0', marginBottom: '40px' },
+  loginForm: { display: 'flex', flexDirection: 'column', gap: '16px' },
+  loginInput: { padding: '18px 24px', borderRadius: '30px', border: 'none', fontSize: '16px', outline: 'none' },
+  loginSubmit: { padding: '18px', borderRadius: '30px', border: 'none', backgroundColor: '#14a375', color: '#white', fontWeight: '800', cursor: 'pointer', fontSize: '16px', color: '#fff' },
+  
+  mainFeed: { display: 'flex', flexDirection: 'column', width: '100%' },
+  topGreenSection: { backgroundColor: '#04432f', padding: '16px 16px 8px 16px' },
+  brandHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff', marginBottom: '16px' },
+  welcomeText: { fontSize: '12px', color: '#a3b8b0' },
+  brandName: { fontSize: '24px', fontWeight: '900' },
+  accessibilityGroup: { display: 'flex', alignItems: 'center', gap: '8px' },
+  fontBtn: { backgroundColor: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' },
+  cartFABIcon: { fontSize: '22px', cursor: 'pointer', position: 'relative', backgroundColor: 'rgba(255,255,255,0.15)', padding: '6px', borderRadius: '50%' },
+  cartCountBadge: { position: 'absolute', top: '-4px', right: '-4px', backgroundColor: '#ef4444', color: '#fff', borderRadius: '50%', width: '16px', height: '16px', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700' },
+  
+  searchRowContainer: { display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px', width: '100%' },
+  searchBarWrapper: { flex: 1, backgroundColor: '#fff', borderRadius: '30px', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '8px' },
+  searchIcon: { color: '#888', fontSize: '16px' },
+  searchInputField: { flex: 1, border: 'none', outline: 'none', fontSize: '14px', backgroundColor: 'transparent' },
+  micIcon: { fontSize: '16px', color: '#10805c' },
+  vegToggleSquare: { width: '48px', height: '44px', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' },
+  vegDotBox: { width: '12px', height: '12px', border: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' },
+  vegInnerDot: { width: '6px', height: '6px', borderRadius: '50%' },
+  
+  bottomWhiteSection: { backgroundColor: '#f8fafc', borderRadius: '24px 24px 0 0', padding: '20px 14px 100px 14px', flex: 1 },
+  filterMenuRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' },
+  auxFilterBtn: { border: 'none', padding: '6px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '600', cursor: 'pointer' },
+  
+  cardMatrixGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', width: '100%' },
+  foodCard: { backgroundColor: '#fff', borderRadius: '20px', padding: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', overflow: 'hidden' },
+  cardHeaderArea: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' },
+  vegSquareIndicator: { width: '14px', height: '14px', border: '1.5px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' },
+  vegCircleDot: { width: '6px', height: '6px', borderRadius: '50%' },
+  soldOutBadge: { backgroundColor: '#fee2e2', color: '#ef4444', fontSize: '9px', fontWeight: '700', padding: '2px 6px', borderRadius: '6px' },
+  cardImageWrapper: { width: '100%', height: '100px', borderRadius: '14px', overflow: 'hidden', marginBottom: '8px' },
+  cardVisualAsset: { width: '100%', height: '100px', objectFit: 'cover' },
+  cardFoodTitle: { fontSize: '14px', fontWeight: '800', color: '#1e293b', margin: '0 0 4px 0', lineHeight: '1.2' },
+  cardDetailsRow: { display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#64748b', marginBottom: '6px' },
+  interactiveStarsBar: { display: 'flex', gap: '2px', marginBottom: '12px' },
+  clickStar: { cursor: 'pointer', fontSize: '13px' },
+  cardActionFooter: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' },
+  cardPrice: { fontSize: '16px', fontWeight: '900', color: '#04432f' },
+  initialAddBtn: { backgroundColor: '#e2f2ed', color: '#10805c', border: 'none', padding: '6px 14px', borderRadius: '10px', fontWeight: '800', fontSize: '11px', cursor: 'pointer' },
+  mathQuantityController: { display: 'flex', alignItems: 'center', backgroundColor: '#10805c', borderRadius: '10px', padding: '2px 4px' },
+  qtyMathActionBtn: { background: 'none', border: 'none', color: '#fff', width: '20px', height: '20px', fontSize: '14px', fontWeight: '700', cursor: 'pointer' },
+  qtyNumericDisplay: { color: '#fff', fontSize: '12px', padding: '0 4px', minWidth: '14px', textAlign: 'center', fontWeight: '700' },
+  disabledText: { fontSize: '11px', color: '#cbd5e1', fontWeight: '600' },
+  stickyOrderBar: { position: 'fixed', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: '480px', backgroundColor: '#04432f', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 998, boxShadow: '0 -4px 20px rgba(0,0,0,0.2)' },
+  stickyOrderInfo: { display: 'flex', flexDirection: 'column' },
+  stickyCount: { color: '#fff', fontWeight: '800', fontSize: '15px' },
+  stickyLabel: { color: '#a3b8b0', fontSize: '11px' },
+  stickyOrderBtn: { backgroundColor: '#14a375', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '12px', fontWeight: '800', fontSize: '14px', cursor: 'pointer' },
 };
