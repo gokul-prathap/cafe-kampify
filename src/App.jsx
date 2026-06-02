@@ -14,6 +14,7 @@ export default function App() {
   const [phone, setPhone] = useState(() => localStorage.getItem('kampify_phone') || '');
   const [ccSearch, setCcSearch] = useState('');
   const [ccOpen, setCcOpen] = useState(false);
+  const [dialCode, setDialCode] = useState('+91');
 
   const COUNTRY_CODES = [
     { code: '+91',  flag: '🇮🇳', name: 'India',          maxLen: 10 },
@@ -175,6 +176,18 @@ export default function App() {
       />
     );
   }
+  const validatePhoneNumber = (phone, dialCode) => {
+    const num = phone.replace(/\D/g, '');
+    const rules = {
+      '+91': [10, 10], '+1': [10, 10], '+44': [10, 10],
+      '+61': [9, 9], '+33': [9, 9], '+49': [10, 11],
+      '+971': [9, 9], '+65': [8, 8], '+81': [9, 10], '+31': [9, 9]
+    }[dialCode] || [7, 14];
+    return num.length >= rules[0] && num.length <= rules[1];
+  };
+  
+  const isValid = validatePhoneNumber(phone, dialCode);
+  
 
   return (
     <div style={{ ...styles.appWrapper, fontSize: `${16}px` }}>
@@ -309,7 +322,7 @@ export default function App() {
               />
             </div>
 
-            <button type="submit" style={styles.loginSubmit}>GET STARTED ➔</button>
+            <button type="submit" style={styles.loginSubmit} disabled={!isValid}>GET STARTED ➔</button>
           </form>
           <Footer />
         </div>
