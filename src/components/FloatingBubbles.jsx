@@ -10,7 +10,7 @@ const BASE_COUNT = 100;
 const MAX_COUNT = 400;
 
 export default function FloatingBubbles({ progress = 0, keypressFlip = 0 }) {
-  const clampedProgress = Math.min(100, Math.max(0, progress));
+  const clampedProgress = Math.min(5, Math.max(0, progress));
   const count = Math.round(BASE_COUNT + (clampedProgress / 100) * (MAX_COUNT - BASE_COUNT));
 
   // Track previous flip count to detect new keypress

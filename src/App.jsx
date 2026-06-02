@@ -6,6 +6,7 @@ import AIChatBot from './components/AIChatBot';
 import CartPage from './components/CartPage';
 import FloatingBubbles from './components/FloatingBubbles';
 import Footer from './components/Footer';
+import FoodGrid from './components/FoodGrid';
 
 export default function App() {
   const [view, setView] = useState('login'); // login | home | cart
@@ -17,23 +18,23 @@ export default function App() {
   const [dialCode, setDialCode] = useState('+91');
 
   const COUNTRY_CODES = [
-    { code: '+91',  flag: '🇮🇳', name: 'India',          maxLen: 10 },
-    { code: '+1',   flag: '🇺🇸', name: 'United States', maxLen: 10 },
-    { code: '+44',  flag: '🇬🇧', name: 'United Kingdom',maxLen: 10 },
-    { code: '+61',  flag: '🇦🇺', name: 'Australia',     maxLen: 9  },
-    { code: '+971', flag: '🇦🇪', name: 'UAE',           maxLen: 9  },
-    { code: '+65',  flag: '🇸🇬', name: 'Singapore',     maxLen: 8  },
-    { code: '+60',  flag: '🇲🇾', name: 'Malaysia',      maxLen: 10 },
-    { code: '+966', flag: '🇸🇦', name: 'Saudi Arabia',  maxLen: 9  },
-    { code: '+974', flag: '🇶🇦', name: 'Qatar',         maxLen: 8  },
-    { code: '+968', flag: '🇴🇲', name: 'Oman',          maxLen: 8  },
-    { code: '+49',  flag: '🇩🇪', name: 'Germany',       maxLen: 11 },
-    { code: '+33',  flag: '🇫🇷', name: 'France',        maxLen: 9  },
-    { code: '+81',  flag: '🇯🇵', name: 'Japan',         maxLen: 10 },
-    { code: '+86',  flag: '🇨🇳', name: 'China',         maxLen: 11 },
-    { code: '+880', flag: '🇧🇩', name: 'Bangladesh',    maxLen: 10 },
-    { code: '+94',  flag: '🇱🇰', name: 'Sri Lanka',     maxLen: 9  },
-    { code: '+977', flag: '🇳🇵', name: 'Nepal',         maxLen: 10 },
+    { code: '+91', flag: '🇮🇳', name: 'India', maxLen: 10 },
+    { code: '+1', flag: '🇺🇸', name: 'United States', maxLen: 10 },
+    { code: '+44', flag: '🇬🇧', name: 'United Kingdom', maxLen: 10 },
+    { code: '+61', flag: '🇦🇺', name: 'Australia', maxLen: 9 },
+    { code: '+971', flag: '🇦🇪', name: 'UAE', maxLen: 9 },
+    { code: '+65', flag: '🇸🇬', name: 'Singapore', maxLen: 8 },
+    { code: '+60', flag: '🇲🇾', name: 'Malaysia', maxLen: 10 },
+    { code: '+966', flag: '🇸🇦', name: 'Saudi Arabia', maxLen: 9 },
+    { code: '+974', flag: '🇶🇦', name: 'Qatar', maxLen: 8 },
+    { code: '+968', flag: '🇴🇲', name: 'Oman', maxLen: 8 },
+    { code: '+49', flag: '🇩🇪', name: 'Germany', maxLen: 11 },
+    { code: '+33', flag: '🇫🇷', name: 'France', maxLen: 9 },
+    { code: '+81', flag: '🇯🇵', name: 'Japan', maxLen: 10 },
+    { code: '+86', flag: '🇨🇳', name: 'China', maxLen: 11 },
+    { code: '+880', flag: '🇧🇩', name: 'Bangladesh', maxLen: 10 },
+    { code: '+94', flag: '🇱🇰', name: 'Sri Lanka', maxLen: 9 },
+    { code: '+977', flag: '🇳🇵', name: 'Nepal', maxLen: 10 },
   ];
   const filteredCC = COUNTRY_CODES.filter(c =>
     c.name.toLowerCase().includes(ccSearch.toLowerCase()) || c.code.includes(ccSearch)
@@ -84,7 +85,7 @@ export default function App() {
   };
   const [menuItems, setMenuItems] = useState(INITIAL_MENU);
   const [cart, setCart] = useState({});
-  
+
 
   // Dynamic Query Filter Hooks
   const [searchTerm, setSearchTerm] = useState('');
@@ -161,14 +162,20 @@ export default function App() {
     return matchSearch && matchCat && matchVeg && matchNonVeg && matchAvail;
   });
 
+  // Function to reset the cart
+  const handleClearCart = () => {
+    setCart({});
+  };
+
   if (view === 'cart') {
     return (
-      <CartPage 
-        cart={cart} 
-        menuItems={menuItems} 
-        updateCart={updateCart} 
+      <CartPage
+        cart={cart}
+        menuItems={menuItems}
+        updateCart={updateCart}
         username={username}
         onBack={() => setView('home')}
+        clearCart={handleClearCart}
         ordered={ordered}
         setOrdered={setOrdered}
         setSecondsLeft={setSecondsLeft}
@@ -185,9 +192,9 @@ export default function App() {
     }[dialCode] || [7, 14];
     return num.length >= rules[0] && num.length <= rules[1];
   };
-  
+
   const isValid = validatePhoneNumber(phone, dialCode);
-  
+
 
   return (
     <div style={{ ...styles.appWrapper, fontSize: `${16}px` }}>
@@ -237,7 +244,7 @@ export default function App() {
               <defs>
                 <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
                   <feGaussianBlur stdDeviation="3.5" result="blur" />
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                 </filter>
               </defs>
               <circle cx="60" cy="60" r="58" fill="rgba(255,255,255,0.07)" />
@@ -252,9 +259,9 @@ export default function App() {
               {/* Bowl rim */}
               <ellipse cx="60" cy="62" rx="34" ry="8" fill="#b45309" />
               {/* Food contents */}
-              <text x="38" y="60" style={{fontSize:'22px'}}>🥗</text>
-              <text x="62" y="56" style={{fontSize:'14px'}}>🍗</text>
-              <text x="58" y="70" style={{fontSize:'12px'}}>🫓</text>
+              <text x="38" y="60" style={{ fontSize: '22px' }}>🥗</text>
+              <text x="62" y="56" style={{ fontSize: '14px' }}>🍗</text>
+              <text x="58" y="70" style={{ fontSize: '12px' }}>🫓</text>
             </svg>
           </div>
 
@@ -336,7 +343,7 @@ export default function App() {
                 <p style={styles.welcomeText}>Hello, {username}!</p>
                 <h2 style={styles.brandName}>Cafe Kampify</h2>
               </div>
-              
+
               {/* Accessibility Font Switcher Layout */}
               <div style={styles.accessibilityGroup}>
                 <div onClick={() => setView('cart')} style={styles.cartFABIcon}>
@@ -349,45 +356,45 @@ export default function App() {
             <div style={styles.searchRowContainer}>
               <div style={styles.searchBarWrapper}>
                 <span style={styles.searchIcon}>🔍</span>
-                <input 
-                  type="text" 
-                  placeholder="Search for 'Pizza' or Stews..." 
+                <input
+                  type="text"
+                  placeholder="Search for 'Pizza' or Stews..."
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   style={styles.searchInputField}
                 />
               </div>
-              
+
               {/* NON-VEG Toggle */}
-<div
-  onClick={() => { setNonVegOnly(!nonVegOnly); if (!nonVegOnly) setVegOnly(false); }}
-  style={{ 
-    ...styles.vegToggleSquare, 
-    backgroundColor: nonVegOnly ? '#c62828' : '#fff',
-    // Force a vertical column stack
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '6px', /* Adjust this gap to bring them closer or further apart */
-    padding: '8px' /* Ensure uniform padding around the stacked contents */
-  }}
->
-  {/* TOP element */}
-  <span style={{ fontSize: '10px', fontWeight: '800', color: nonVegOnly ? '#fff' : '#444', lineHeight: '1' }}>
-    NON
-  </span>
-  
-  {/* BOTTOM element */}
-  <div style={{ ...styles.vegDotBox, borderColor: nonVegOnly ? '#fff' : '#c62828', margin: 0 }}>
-    <div style={{ ...styles.vegInnerDot, backgroundColor: '#c62828' }} />
-  </div>
-</div>
+              <div
+                onClick={() => { setNonVegOnly(!nonVegOnly); if (!nonVegOnly) setVegOnly(false); }}
+                style={{
+                  ...styles.vegToggleSquare,
+                  backgroundColor: nonVegOnly ? '#c62828' : '#fff',
+                  // Force a vertical column stack
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px', /* Adjust this gap to bring them closer or further apart */
+                  padding: '8px' /* Ensure uniform padding around the stacked contents */
+                }}
+              >
+                {/* TOP element */}
+                <span style={{ fontSize: '10px', fontWeight: '800', color: nonVegOnly ? '#fff' : '#444', lineHeight: '1' }}>
+                  NON
+                </span>
+
+                {/* BOTTOM element */}
+                <div style={{ ...styles.vegDotBox, borderColor: nonVegOnly ? '#fff' : '#c62828', margin: 0 }}>
+                  <div style={{ ...styles.vegInnerDot, backgroundColor: '#c62828' }} />
+                </div>
+              </div>
 
 
               {/* VEG Toggle */}
-              <div 
-                onClick={() => { setVegOnly(!vegOnly); if (!vegOnly) setNonVegOnly(false); }} 
+              <div
+                onClick={() => { setVegOnly(!vegOnly); if (!vegOnly) setNonVegOnly(false); }}
                 style={{ ...styles.vegToggleSquare, backgroundColor: vegOnly ? '#10805c' : '#fff' }}
               >
                 <span style={{ fontSize: '10px', fontWeight: '800', color: vegOnly ? '#fff' : '#444' }}>VEG</span>
@@ -407,8 +414,8 @@ export default function App() {
 
             {/* Global Auxiliary Filters Menu Row */}
             <div style={styles.filterMenuRow}>
-              <button 
-                onClick={() => setShowActiveOnly(!showActiveOnly)} 
+              <button
+                onClick={() => setShowActiveOnly(!showActiveOnly)}
                 style={{ ...styles.auxFilterBtn, backgroundColor: showActiveOnly ? '#04432f' : '#f1f5f9', color: showActiveOnly ? '#fff' : '#333' }}
               >
                 📦 Active Stock Only
@@ -417,64 +424,13 @@ export default function App() {
             </div>
 
             {/* High Fidelity Food Cards Responsive Matrix Grid */}
-            <div style={styles.cardMatrixGrid}>
-              {processedDishes.map(dish => {
-                const itemQuantity = cart[dish.id] || 0;
-                return (
-                  <div 
-                    key={dish.id} 
-                    style={{ ...styles.foodCard, opacity: dish.available ? 1 : 0.55 }}
-                  >
-                    <div style={styles.cardHeaderArea}>
-                      <div style={{ ...styles.vegSquareIndicator, borderColor: dish.isVeg ? '#2e7d32' : '#c62828' }}>
-                        <div style={{ ...styles.vegCircleDot, backgroundColor: dish.isVeg ? '#2e7d32' : '#c62828' }} />
-                      </div>
-                      {!dish.available && <span style={styles.soldOutBadge}>Sold Out</span>}
-                    </div>
-
-                    <div style={styles.cardImageWrapper}>
-                      <img src={dish.image} alt={dish.name} style={styles.cardVisualAsset} />
-                    </div>
-
-                    <h4 style={{ ...styles.cardFoodTitle, fontSize: `${16}px` }}>{dish.name}</h4>
-                    
-                    <div style={styles.cardDetailsRow}>
-                      <span style={{ fontSize: '11px', color: '#64748b' }}>🕒 {dish.time}</span>
-                      <span style={styles.cardRating}>⭐ {dish.initialRating}</span>
-                    </div>
-
-                    {/* Quality Star Rating Feedback Handler Block */}
-                    <div style={styles.interactiveStarsBar}>
-                      {[1, 2, 3, 4, 5].map(star => (
-                        <span 
-                          key={star} 
-                          onClick={() => dish.available && handleRateItem(dish.id, star)}
-                          style={{ ...styles.clickStar, color: star <= Math.round(dish.initialRating) ? '#f59e0b' : '#cbd5e1' }}
-                        >
-                          ★
-                        </span>
-                      ))}
-                    </div>
-
-                    <div style={styles.cardActionFooter}>
-                      <span style={styles.cardPrice}>₹{dish.price}</span>
-                      
-                      {!dish.available ? (
-                        <span style={styles.disabledText}>Unavailable</span>
-                      ) : itemQuantity === 0 ? (
-                        <button onClick={() => updateCart(dish.id, 1)} style={styles.initialAddBtn}>ADD +</button>
-                      ) : (
-                        <div style={styles.mathQuantityController}>
-                          <button onClick={() => updateCart(dish.id, -1)} style={styles.qtyMathActionBtn}>−</button>
-                          <span style={styles.qtyNumericDisplay}>{itemQuantity}</span>
-                          <button onClick={() => updateCart(dish.id, 1)} style={styles.qtyMathActionBtn}>+</button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <FoodGrid
+              processedDishes={processedDishes}
+              cart={cart}
+              updateCart={updateCart}
+              handleRateItem={handleRateItem}
+              styles={styles}
+            />
           </div>
 
           {/* Integrated AI Support Engine Float Layer */}
@@ -528,7 +484,7 @@ const styles = {
   },
   loginTop: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px', zIndex: 2, position: 'relative' },
   loginAccentDot: { color: '#38ef7d', fontSize: '14px' },
-  loginAccentTitle: { fontSize: 'clamp(16px, 6vw, 24px)', fontWeight: '900', letterSpacing: '3px', color: '#fff', textTransform: 'uppercase', whiteSpace:'nowrap', animation: 'titlePulse 2.5s ease-in-out infinite', textShadow: '0 0 20px rgba(56,239,125,0.5), 0 0 40px rgba(56,239,125,0.2)' },
+  loginAccentTitle: { fontSize: 'clamp(16px, 6vw, 24px)', fontWeight: '900', letterSpacing: '3px', color: '#fff', textTransform: 'uppercase', whiteSpace: 'nowrap', animation: 'titlePulse 2.5s ease-in-out infinite', textShadow: '0 0 20px rgba(56,239,125,0.5), 0 0 40px rgba(56,239,125,0.2)' },
   loginIconWrap: { marginBottom: '16px', zIndex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'width 0.3s ease, height 0.3s ease' },
   loginHeading: { fontSize: 'clamp(33px, 6vw, 42px)', fontWeight: '900', lineHeight: '1.1', marginBottom: '8px', zIndex: 1 },
   loginHeadingAccent: { color: '#38ef7d' },
@@ -543,7 +499,7 @@ const styles = {
   ccList: { maxHeight: '200px', overflowY: 'auto' },
   ccItem: { display: 'flex', alignItems: 'center', gap: '8px', padding: '9px 14px', cursor: 'pointer', color: '#333', backgroundColor: '#fff' },
   phoneInput: { flex: 1, padding: '18px 20px', borderRadius: '30px', border: 'none', fontSize: '15px', fontWeight: '600', outline: 'none', backgroundColor: '#fff', color: '#333' },
-  
+
   mainFeed: { display: 'flex', flexDirection: 'column', width: '100%' },
   topGreenSection: { backgroundColor: '#04432f', padding: '16px 16px 8px 16px' },
   brandHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff', marginBottom: '16px' },
@@ -553,7 +509,7 @@ const styles = {
   fontBtn: { backgroundColor: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' },
   cartFABIcon: { fontSize: '22px', cursor: 'pointer', position: 'relative', backgroundColor: 'rgba(255,255,255,0.15)', padding: '6px', borderRadius: '50%' },
   cartCountBadge: { position: 'absolute', top: '-4px', right: '-4px', backgroundColor: '#ef4444', color: '#fff', borderRadius: '50%', width: '16px', height: '16px', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700' },
-  
+
   searchRowContainer: { display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px', width: '100%' },
   searchBarWrapper: { flex: 1, backgroundColor: '#fff', borderRadius: '30px', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '8px' },
   searchIcon: { color: '#888', fontSize: '16px' },
@@ -562,11 +518,11 @@ const styles = {
   vegToggleSquare: { width: '48px', height: '44px', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' },
   vegDotBox: { width: '12px', height: '12px', border: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' },
   vegInnerDot: { width: '6px', height: '6px', borderRadius: '50%' },
-  
+
   bottomWhiteSection: { backgroundColor: '#f8fafc', borderRadius: '24px 24px 0 0', padding: '20px 14px 100px 14px', flex: 1 },
   filterMenuRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' },
   auxFilterBtn: { border: 'none', padding: '6px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '600', cursor: 'pointer' },
-  
+
   cardMatrixGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', width: '100%' },
   foodCard: { backgroundColor: '#fff', borderRadius: '20px', padding: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', overflow: 'hidden' },
   cardHeaderArea: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' },
