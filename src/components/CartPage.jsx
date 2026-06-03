@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-// Move styles to the top so all components can safely access it instantly
 const styles = {
   screen: { backgroundColor: '#f8fafc', minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden', boxSizing: 'border-box' },
   scrollContainer: { flex: 1, overflowY: 'auto', padding: '16px 16px 320px 16px', zIndex: 5, position: 'relative' },
@@ -25,8 +24,6 @@ const styles = {
   emptyHeading: { fontSize: '20px', fontWeight: '800', color: '#1e293b', margin: '0 0 8px 0' },
   emptySubtext: { fontSize: '13px', color: '#64748b', lineHeight: '1.5', maxWidth: '280px', margin: '0 0 24px 0' },
   browseBtn: { backgroundColor: '#04432f', color: '#fff', border: 'none', padding: '12px 28px', borderRadius: '24px', fontSize: '14px', fontWeight: '700', cursor: 'pointer', boxShadow: '0 4px 12px rgba(4,67,47,0.2)', pointerEvents: 'auto' },
-
-  /* HISTORICAL TIMERS STYLES */
   historyWrapper: { marginTop: '24px', pointerEvents: 'auto' },
   historyHeaderToggle: { display: 'flex', justifyContent: 'space-between', width: '100%', padding: '12px 16px', backgroundColor: '#e2e8f0', border: 'none', borderRadius: '12px', fontWeight: '700', color: '#334155', fontSize: '13px', cursor: 'pointer' },
   historyListStack: { display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' },
@@ -40,89 +37,6 @@ const styles = {
 };
 
 const fmt = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
-
-const COUNTRY_CODES = [
-  { code: '+91', flag: '🇮🇳', name: 'India' },
-  { code: '+1', flag: '🇺🇸', name: 'United States' },
-  { code: '+44', flag: '🇬🇧', name: 'United Kingdom' },
-  { code: '+61', flag: '🇦🇺', name: 'Australia' },
-  { code: '+971', flag: '🇦🇪', name: 'UAE' },
-  { code: '+65', flag: '🇸🇬', name: 'Singapore' },
-  { code: '+60', flag: '🇲🇾', name: 'Malaysia' },
-  { code: '+966', flag: '🇸🇦', name: 'Saudi Arabia' },
-  { code: '+974', flag: '🇶🇦', name: 'Qatar' },
-  { code: '+968', flag: '🇴🇲', name: 'Oman' },
-  { code: '+49', flag: '🇩🇪', name: 'Germany' },
-  { code: '+33', flag: '🇫🇷', name: 'France' },
-  { code: '+39', flag: '🇮🇹', name: 'Italy' },
-  { code: '+81', flag: '🇯🇵', name: 'Japan' },
-  { code: '+86', stroke: '🇨🇳', name: 'China' },
-  { code: '+82', flag: '🇰🇷', name: 'South Korea' },
-  { code: '+55', flag: '🇧🇷', name: 'Brazil' },
-  { code: '+27', flag: '🇿🇦', name: 'South Africa' },
-  { code: '+880', flag: '🇧🇩', name: 'Bangladesh' },
-  { code: '+94', flag: '🇱🇰', name: 'Sri Lanka' },
-  { code: '+977', flag: '🇳🇵', name: 'Nepal' },
-];
-
-function CountryDropdown({ value, onChange }) {
-  const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState('');
-  const ref = useRef(null);
-
-  const selected = COUNTRY_CODES.find(c => c.code === value) || COUNTRY_CODES[0];
-  const filtered = COUNTRY_CODES.filter(c =>
-    c.name.toLowerCase().includes(search.toLowerCase()) ||
-    c.code.includes(search)
-  );
-
-  useEffect(() => {
-    const handler = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
-
-  return (
-    <div ref={ref} style={{ position: 'relative', flexShrink: 0 }}>
-      <button type="button" onClick={() => setOpen(o => !o)} style={ddStyles.trigger}>
-        {selected.flag} {selected.code} ▾
-      </button>
-      {open && (
-        <div style={ddStyles.dropdown}>
-          <input
-            autoFocus
-            type="text"
-            placeholder="Search country..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={ddStyles.search}
-          />
-          <div style={ddStyles.list}>
-            {filtered.map(c => (
-              <div
-                key={c.code}
-                onClick={() => { onChange(c.code); setOpen(false); setSearch(''); }}
-                style={{ ...ddStyles.item, backgroundColor: c.code === value ? '#e2f2ed' : '#fff' }}
-              >
-                <span>{c.flag}</span>
-                <span style={{ flex: 1, fontSize: '13px' }}>{c.name}</span>
-                <span style={{ fontSize: '12px', color: '#888', fontWeight: '600' }}>{c.code}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-const ddStyles = {
-  trigger: { backgroundColor: '#f1f5f9', border: 'none', borderRadius: '10px', padding: '10px 10px', fontSize: '13px', fontWeight: '700', cursor: 'pointer', whiteSpace: 'nowrap', outline: 'none' },
-  dropdown: { position: 'absolute', top: '110%', left: 0, zIndex: 999, backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)', width: '220px', overflow: 'hidden' },
-  search: { width: '100%', padding: '10px 12px', border: 'none', borderBottom: '1px solid #e2e8f0', outline: 'none', fontSize: '13px', boxSizing: 'border-box' },
-  list: { maxHeight: '200px', overflowY: 'auto' },
-  item: { display: 'flex', alignItems: 'center', gap: '8px', padding: '9px 12px', cursor: 'pointer' },
-};
 
 function FloatingBubbles() {
   return (
@@ -173,25 +87,18 @@ export default function CartPage({ cart = {}, menuItems, updateCart, onBack, use
   const [historyOpen, setHistoryOpen] = useState(false);
   const [timeUpdater, setTimeUpdater] = useState(Date.now());
 
-  // Load orders database stack from local storage on mount
   useEffect(() => {
     const savedOrders = localStorage.getItem('kampify_orders_list');
     if (savedOrders) {
-      try {
-        setOrders(JSON.parse(savedOrders));
-      } catch (e) {
-        setOrders([]);
-      }
+      try { setOrders(JSON.parse(savedOrders)); } catch (e) { setOrders([]); }
     }
   }, []);
 
-  // Universal heartbeat effect driving real-time timer countdown calculations
   useEffect(() => {
     const timer = setInterval(() => {
       const now = Date.now();
       setTimeUpdater(now);
 
-      // Check if any order has crossed its expiration milestone just now
       setOrders(prevOrders => {
         let hasChanges = false;
         const mapped = prevOrders.map(ord => {
@@ -204,21 +111,17 @@ export default function CartPage({ cart = {}, menuItems, updateCart, onBack, use
         });
 
         if (hasChanges) {
-          console.log('mapped',mapped)
           localStorage.setItem('kampify_orders_list', JSON.stringify(mapped));
           return mapped;
         }
         return prevOrders;
       });
-
     }, 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Derive runtime attributes for the latest order context to feed the generic top bar
   const storedOrders = JSON.parse(localStorage.getItem('kampify_orders_list')) || [];
   const latestOrder = storedOrders.sort((a, b) => b.timestamp - a.timestamp)[0];
-  const activeOrderItems = latestOrder ? latestOrder.items : [];
   let genericTimeLeft = 0;
   let isGenericTimerActive = false;
 
@@ -228,15 +131,22 @@ export default function CartPage({ cart = {}, menuItems, updateCart, onBack, use
     isGenericTimerActive = genericTimeLeft > 0;
   }
 
-  const totalCost = activeCartEntries.reduce((sum, [id, qty]) => {
-    const dish = menuItems.find(m => m.id === id);
+  // UPDATED: Safely calculates cost using inner entry objects
+  const totalCost = activeCartEntries.reduce((sum, [key, cartObj]) => {
+    const baseId = cartObj?.baseId || key;
+    const qty = cartObj?.qty ?? 0;
+    const dish = menuItems.find(m => m.id === baseId);
     return sum + (dish ? dish.price * qty : 0);
   }, 0);
 
+  // UPDATED: Includes customized specifications in the WhatsApp slip text
   const checkoutViaWhatsApp = () => {
     const orderId = `KFY-${Date.now().toString().slice(-6)}`;
 
-    let orderSlip = `* ＣＡＦＥ ＫＡＭＰＩＦＹ*
+    let orderSlip = `*
+    
+    
+    ＣＡＦＥ ＫＡＭＰＩＦＹ*
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
@@ -251,26 +161,30 @@ export default function CartPage({ cart = {}, menuItems, updateCart, onBack, use
     const snapshotItems = [];
     const instructionLines = [];
 
-    activeCartEntries.forEach(([id, itemQuantity]) => {
-      const dish = menuItems.find(m => m.id === id);
+    activeCartEntries.forEach(([key, cartObj]) => {
+      const baseId = cartObj?.baseId || key;
+      const itemQuantity = cartObj?.qty ?? 0;
+      const selectedOptions = cartObj?.options || [];
 
+      const dish = menuItems.find(m => m.id === baseId);
       if (!dish) return;
 
       const vegIcon = dish.isVeg ? "🟢" : "🔴";
+      const optionsString = selectedOptions.length > 0 ? ` (${selectedOptions.join(', ')})` : '';
 
       orderSlip += `
-${vegIcon} ${dish.name} → *${itemQuantity}*
+${vegIcon} ${dish.name}${optionsString} → *${itemQuantity}*
 `;
 
-      if (dish.optionalRequests?.length) {
+      if (selectedOptions.length > 0) {
         instructionLines.push(
-          `• ${itemQuantity} ${dish.name} — ${dish.optionalRequests.join(", ")}`
+          `• ${itemQuantity} ${dish.name} — ${selectedOptions.join(", ")}`
         );
       }
 
       snapshotItems.push({
-        id: dish.id,
-        name: dish.name,
+        id: baseId,
+        name: dish.name + optionsString,
         qty: itemQuantity,
         priceTotal: dish.price * itemQuantity
       });
@@ -279,9 +193,9 @@ ${vegIcon} ${dish.name} → *${itemQuantity}*
     if (instructionLines.length > 0) {
       orderSlip += `
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━
 ⚠️ *SPECIAL INSTRUCTIONS*
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━
 
 ${instructionLines.join("\n")}
 `;
@@ -293,10 +207,7 @@ ${instructionLines.join("\n")}
 💰 *BILL SUMMARY*
 ━━━━━━━━━━━━━━━━━━━━━━
 
-🛒 Total Items: ${snapshotItems.reduce(
-      (sum, item) => sum + item.qty,
-      0
-    )}
+🛒 Total Items: ${snapshotItems.reduce((sum, item) => sum + item.qty, 0)}
 
 💵 *TOTAL BILL: ₹${totalCost}*
 
@@ -314,18 +225,10 @@ ${instructionLines.join("\n")}
     };
 
     const updatedOrdersList = [newOrder, ...orders];
-
     setOrders(updatedOrdersList);
-console.log(updatedOrdersList)
-    localStorage.setItem(
-      "kampify_orders_list",
-      JSON.stringify(updatedOrdersList)
-    );
+    localStorage.setItem("kampify_orders_list", JSON.stringify(updatedOrdersList));
 
-    window.open(
-      `https://wa.me/919901299899?text=${encodeURIComponent(orderSlip)}`,
-      "_blank"
-    );
+    window.open(`https://wa.me/919901299899?text=${encodeURIComponent(orderSlip)}`, "_blank");
 
     if (typeof clearCart === "function") {
       clearCart();
@@ -388,14 +291,8 @@ console.log(updatedOrdersList)
   return (
     <div style={styles.screen}>
       <style>{`
-        @keyframes timerPulse {
-          0%, 100% { box-shadow: 0 0 6px 1px #14a375; }
-          50%       { box-shadow: 0 0 14px 4px #38ef7d; }
-        }
-        @keyframes alertPulse {
-          0%, 100% { background-color: #fff3cd; border-color: #ffeeba; }
-          50%       { background-color: #fce8bc; border-color: #f7d683; }
-        }
+        @keyframes timerPulse { 0%, 100% { box-shadow: 0 0 6px 1px #14a375; } 50% { box-shadow: 0 0 14px 4px #38ef7d; } }
+        @keyframes alertPulse { 0%, 100% { background-color: #fff3cd; border-color: #ffeeba; } 50% { background-color: #fce8bc; border-color: #f7d683; } }
         @keyframes waveAnimation { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes kayakBobbing { 0% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(3deg); } 100% { transform: translateY(0) rotate(0deg); } }
         @keyframes paddleRowing { 0% { transform: rotate(-15deg); } 50% { transform: rotate(20deg); } 100% { transform: rotate(-15deg); } }
@@ -403,16 +300,7 @@ console.log(updatedOrdersList)
         .animated-wave-2 { animation: waveAnimation 2.5s linear infinite reverse; }
         .animated-kayak { animation: kayakBobbing 3s ease-in-out infinite; transform-origin: 200px 130px; }
         .animated-paddle { animation: paddleRowing 2s ease-in-out infinite; transform-origin: 150px 120px; }
-        .generic-timer-banner {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 12px 16px;
-          border-radius: 12px;
-          border: 1px solid #ffeeba;
-          margin-bottom: 16px;
-          animation: alertPulse 2.5s ease-in-out infinite;
-        }
+        .generic-timer-banner { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-radius: 12px; border: 1px solid #ffeeba; margin-bottom: 16px; animation: alertPulse 2.5s ease-in-out infinite; }
       `}</style>
 
       <div style={styles.scrollContainer}>
@@ -421,7 +309,6 @@ console.log(updatedOrdersList)
           <h2 style={styles.title}>Your Basket</h2>
         </header>
 
-        {/* SECTION A: ACTIVE CART/BASKET HANDLING */}
         {activeCartEntries.length === 0 ? (
           <div style={styles.emptyContainer}>
             {isGenericTimerActive && (
@@ -448,19 +335,32 @@ console.log(updatedOrdersList)
             )}
 
             <div style={styles.itemList}>
-              {activeCartEntries.map(([id, qty]) => {
-                const dish = menuItems.find(m => m.id === id);
+              {activeCartEntries.map(([cartKey, cartObj]) => {
+                // FIXED: Extracts scalar configuration fields out of object keys safely
+                const baseId = cartObj?.baseId || cartKey;
+                const qty = cartObj?.qty ?? 0;
+                const selectedOptions = cartObj?.options || [];
+
+                const dish = menuItems.find(m => m.id === baseId);
                 if (!dish) return null;
+
                 return (
-                  <div key={id} style={styles.cartItemCard}>
+                  <div key={cartKey} style={styles.cartItemCard}>
                     <div>
-                      <h4 style={styles.itemName}>{dish.name}</h4>
+                      <h4 style={styles.itemName}>
+                        {dish.name}
+                        {selectedOptions.length > 0 && (
+                          <span style={{ display: 'block', fontSize: '11px', color: '#f59e0b', fontWeight: 'bold', marginTop: '3px' }}>
+                            🏷️ {selectedOptions.join(', ')}
+                          </span>
+                        )}
+                      </h4>
                       <span style={styles.itemPrice}>₹{dish.price * qty}</span>
                     </div>
                     <div style={styles.counterBox}>
-                      <button onClick={() => updateCart(id, -1)} style={styles.mathBtn}>−</button>
+                      <button onClick={() => updateCart(cartKey, -1, selectedOptions)} style={styles.mathBtn}>−</button>
                       <span style={styles.qtyText}>{qty}</span>
-                      <button onClick={() => updateCart(id, 1)} style={styles.mathBtn}>+</button>
+                      <button onClick={() => updateCart(cartKey, 1, selectedOptions)} style={styles.mathBtn}>+</button>
                     </div>
                   </div>
                 );
@@ -479,13 +379,9 @@ console.log(updatedOrdersList)
           </div>
         )}
 
-        {/* SECTION B: MULTI-ORDER CONCURRENT TRACKING STACK */}
         {orders.length > 0 && (
           <div style={styles.historyWrapper}>
-            <button
-              onClick={() => setHistoryOpen(!historyOpen)}
-              style={styles.historyHeaderToggle}
-            >
+            <button onClick={() => setHistoryOpen(!historyOpen)} style={styles.historyHeaderToggle}>
               <span>📋 Active & Past Orders ({orders.length})</span>
               <span>{historyOpen ? '🔼 Hide' : '🔽 View'}</span>
             </button>

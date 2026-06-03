@@ -47,7 +47,7 @@ export const INITIAL_MENU = [
 
     // TEA & COFFEE CLASSICS
     { id: 'tc1', name: 'Black Coffee', price: 15, category: 'HOT DRINKS', isVeg: true, time: '8 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80', optionalRequests: ['No Sugar', 'Less Sugar', 'No Ice'] },
-    { id: 'tc2', name: 'Black Tea', price: 15, category: 'HOT DRINKS', isVeg: true, time: '5 min', initialRating: 4.2, available: true, image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80', optionalRequests: ['No Sugar', 'Less Sugar', 'No Ice']},
+    { id: 'tc2', name: 'Black Tea', price: 15, category: 'HOT DRINKS', isVeg: true, time: '5 min', initialRating: 4.2, available: true, image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80', optionalRequests: ['No Sugar', 'Less Sugar', 'No Ice'] },
     { id: 'tc3', name: 'Ginger Tea', price: 20, category: 'HOT DRINKS', isVeg: true, time: '8 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80', optionalRequests: ['No Sugar', 'Less Sugar', 'No Ice'] },
     { id: 'tc4', name: 'Green Tea', price: 20, category: 'HOT DRINKS', isVeg: true, time: '6 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&q=80', optionalRequests: ['No Sugar', 'Less Sugar', 'No Ice'] },
     { id: 'tc5', name: 'Lemon Tea', price: 15, category: 'HOT DRINKS', isVeg: true, time: '6 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80', optionalRequests: ['No Sugar', 'Less Sugar', 'No Ice'] },
@@ -178,6 +178,241 @@ export const INITIAL_MENU = [
     { id: 'rb5', name: 'Mushroom Fried Rice', price: 180, category: 'RICE BOWLS', isVeg: true, time: '18 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
     { id: 'rb6', name: 'Paneer Fried Rice', price: 180, category: 'RICE BOWLS', isVeg: true, time: '18 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
     { id: 'rb7', name: 'Veg Fried Rice', price: 180, category: 'RICE BOWLS', isVeg: true, time: '15 min', initialRating: 4.2, available: true, image: 'https://images.unsplash.com/photo-1603133872878-a364b70db654?w=400&q=80' }
+,
+    {
+        id: "combo_b1",
+        name: "Appam & Kadala Combo",
+        price: 120,
+        category: "Breakfast Combos",
+        time: "15 min",
+        image: "https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["No Sugar", "Less Sugar", "Extra Gravy"],
+        tag: "breakfast_combo"
+    },
+    {
+        id: "combo_b2",
+        name: "Puttu & Cherupayar Combo",
+        price: 110,
+        category: "Breakfast Combos",
+        time: "12 min",
+        image: "https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["With Ghee", "Extra Coconut", "Papadum"],
+        tag: "breakfast_combo"
+    },
+    {
+        id: "combo_b3",
+        name: "Malabar Porotta & Egg Roast",
+        price: 130,
+        category: "Breakfast Combos",
+        time: "15 min",
+        image: "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=500&auto=format&fit=crop&q=60",
+        isVeg: false,
+        available: true,
+        optionalRequests: ["Wheat Porotta", "Spicy Curry", "Less Oil"],
+        tag: "breakfast_combo"
+    },
+    {
+        id: "combo_b4",
+        name: "Idiyappam & Veg Stew",
+        price: 115,
+        category: "Breakfast Combos",
+        time: "10 min",
+        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["Less Sugar", "Extra Milk", "Classic Salted"],
+        tag: "breakfast_combo"
+    },
+    {
+        id: "combo_b5",
+        name: "Pathiri & Chicken Mappas",
+        price: 160,
+        category: "Breakfast Combos",
+        time: "18 min",
+        image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&auto=format&fit=crop&q=60",
+        isVeg: false,
+        available: true,
+        optionalRequests: ["Extra Pathiri", "Mild Gravy"],
+        tag: "breakfast_combo"
+    },
+
+    // ==================== TODAY'S WILD SPECIALS ====================
+    {
+        id: "combo_s1",
+        name: "Cast-Iron Ribeye Stew",
+        price: 420,
+        category: "Wild Specials",
+        time: "25 min",
+        image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop&q=60",
+        isVeg: false,
+        available: true,
+        optionalRequests: ["Spicy", "Medium Rare", "Extra Pepper"],
+        tag: "todays_special"
+    },
+    {
+        id: "combo_s2",
+        name: "Skillet Bannock Bread",
+        price: 140,
+        category: "Wild Specials",
+        time: "10 min",
+        image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["No Sugar", "Less Sugar", "With Butter"],
+        tag: "todays_special"
+    },
+    {
+        id: "combo_s3",
+        name: "Kappa & Meen Curry Fusion",
+        price: 240,
+        category: "Wild Specials",
+        time: "20 min",
+        image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=500&auto=format&fit=crop&q=60",
+        isVeg: false,
+        available: true,
+        optionalRequests: ["High Heat", "Extra Masala", "Thick Gravy"],
+        tag: "todays_special"
+    },
+
+    // ==================== DINNER COMBOS ====================
+    {
+        id: "combo_d1",
+        name: "Outpost BBQ Platter",
+        price: 340,
+        category: "Campfire Dinner",
+        time: "30 min",
+        image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&auto=format&fit=crop&q=60",
+        isVeg: false,
+        available: true,
+        optionalRequests: ["Extra Dip", "Well Done", "No Salt"],
+        tag: "dinner_combo"
+    },
+    {
+        id: "combo_d2",
+        name: "Clay-Baked Whole Trout",
+        price: 380,
+        category: "Campfire Dinner",
+        time: "25 min",
+        image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=500&auto=format&fit=crop&q=60",
+        isVeg: false,
+        available: true,
+        optionalRequests: ["With Lemon", "Mild Herbs", "Spicy Marinade"],
+        tag: "dinner_combo"
+    },
+    {
+        id: "combo_d3",
+        name: "Kizhi Porotta & Beef Roast",
+        price: 290,
+        category: "Campfire Dinner",
+        time: "20 min",
+        image: "https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=500&auto=format&fit=crop&q=60",
+        isVeg: false,
+        available: true,
+        optionalRequests: ["Double Wrapped", "Extra Gravy", "Spicy"],
+        tag: "dinner_combo"
+    },
+    {
+        id: "combo_d4",
+        name: "Thallu Vandi Chicken Biryani",
+        price: 220,
+        category: "Campfire Dinner",
+        time: "15 min",
+        image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&auto=format&fit=crop&q=60",
+        isVeg: false,
+        available: true,
+        optionalRequests: ["Extra Rice", "No Egg", "With Raita"],
+        tag: "dinner_combo"
+    },
+    {
+        id: "combo_d5",
+        name: "Kanji, Payar & Chammanthi",
+        price: 100,
+        category: "Campfire Dinner",
+        time: "10 min",
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["With Ghee", "Extra Pickle", "Papadum"],
+        tag: "dinner_combo"
+    },
+    {
+        id: "combo_t1",
+        name: "Kattan Chayum Pazham Poriyum",
+        price: 60,
+        category: "Tea & Snacks",
+        time: "5 min",
+        image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["No Sugar", "Less Sugar", "Extra Crispy"],
+        tag: "tea_snacks"
+      },
+      {
+        id: "combo_t2",
+        name: "Nadan Chaya & Sukhiyan",
+        price: 55,
+        category: "Tea & Snacks",
+        time: "5 min",
+        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["Strong Tea", "Less Sugar", "+Cardamom"],
+        tag: "tea_snacks"
+      },
+      {
+        id: "combo_t3",
+        name: "Campfire Kappa Cutlet",
+        price: 80,
+        category: "Tea & Snacks",
+        time: "10 min",
+        image: "https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["Spicy Mint Dip", "Tomato Sauce"],
+        tag: "tea_snacks"
+      },
+    
+      // ==================== REFRESHING JUICES ====================
+      {
+        id: "juice_1",
+        name: "Fresh Kulukki Sarbath",
+        price: 50,
+        category: "Juices & Drinks",
+        time: "5 min",
+        image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["No Sugar", "Less Sugar", "No Ice", "Extra Khas Khas"],
+        tag: "juices"
+      },
+      {
+        id: "juice_2",
+        name: "Nadan Nellikka Juice",
+        price: 70,
+        category: "Juices & Drinks",
+        time: "7 min",
+        image: "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["With Honey", "Bird's Eye Chili Hint", "No Ice"],
+        tag: "juices"
+      },
+      {
+        id: "juice_3",
+        name: "Campfire Mint Lime Mojito",
+        price: 90,
+        category: "Juices & Drinks",
+        time: "5 min",
+        image: "https://images.unsplash.com/photo-1546171753-97d7676e4602?w=500&auto=format&fit=crop&q=60",
+        isVeg: true,
+        available: true,
+        optionalRequests: ["No Sugar", "Less Sugar", "No Ice"],
+        tag: "juices"
+      }
 ];
 
 export const CATEGORIES_WITH_ICONS = [

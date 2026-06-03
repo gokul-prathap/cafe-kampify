@@ -7,6 +7,7 @@ import CartPage from './components/CartPage';
 import FloatingBubbles from './components/FloatingBubbles';
 import Footer from './components/Footer';
 import FoodGrid from './components/FoodGrid';
+import TopWaves from './components/TopWaves';
 
 export default function App() {
   const [view, setView] = useState('login'); // login | home | cart
@@ -134,13 +135,27 @@ export default function App() {
     }
   };
 
-  const updateCart = (id, change) => {
+  // UPDATED: Supports storing item arrays mapped to options configurations
+  const updateCart = (idOrKey, change, selectedOptions = []) => {
     setCart(prev => {
       const updated = { ...prev };
-      const currentQty = updated[id] || 0;
-      const calculatedQty = currentQty + change;
-      if (calculatedQty <= 0) delete updated[id];
-      else updated[id] = calculatedQty;
+      let dynamicKey = idOrKey;
+      if (!idOrKey.includes('-') && selectedOptions.length > 0) {
+        dynamicKey = `${idOrKey}-${[...selectedOptions].sort().join(',')}`;
+      }
+      const baseId = idOrKey.split('-')[0];
+      const currentItem = updated[dynamicKey] || { qty: 0, options: selectedOptions, baseId: baseId };
+      const calculatedQty = currentItem.qty + change;
+
+      if (calculatedQty <= 0) {
+        delete updated[dynamicKey];
+      } else {
+        updated[dynamicKey] = {
+          qty: calculatedQty,
+          options: currentItem.options,
+          baseId: baseId
+        };
+      }
       return updated;
     });
   };
@@ -149,7 +164,7 @@ export default function App() {
     setMenuItems(prev => prev.map(item => item.id === id ? { ...item, initialRating: rating } : item));
   };
 
-  const getCartCount = () => Object.values(cart).reduce((a, b) => a + b, 0);
+  const getCartCount = () => Object.values(cart).reduce((a, b) => a + (b?.qty || 0), 0);
 
   const processedDishes = menuItems.filter(item => {
     const matchSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -197,7 +212,6 @@ export default function App() {
 
   const isValid = validatePhoneNumber(phone, dialCode);
 
-
   return (
     <div style={{ ...styles.appWrapper, fontSize: `${16}px` }}>
       {/* Absolute Master Reset Injection Overrides */}
@@ -232,16 +246,14 @@ export default function App() {
 
       {view === 'login' ? (
         <div style={styles.loginContainer}>
-          {/* Decorative scattered background blobs */}
+          <TopWaves />
           <FloatingBubbles progress={loginProgress} keypressFlip={keypressFlip} />
           <div style={styles.loginTop}>
             <span style={styles.loginAccentTitle}>✦ Cafe Kampify ✦</span>
           </div>
 
-          {/* Bowl logo — in-flow, subtle float + glow + steam */}
           <div className="bowl-wrap" style={{ zIndex: 2, margin: '16px 0 20px', flexShrink: 0 }}>
             <svg viewBox="0 0 120 120" width="220" height="220">
-              {/* Glowy outline ring */}
               <circle cx="60" cy="60" r="58" fill="none" stroke="rgba(56,239,125,0.55)" strokeWidth="1.5" filter="url(#glow)" />
               <defs>
                 <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
@@ -251,23 +263,18 @@ export default function App() {
               </defs>
               <circle cx="60" cy="60" r="58" fill="rgba(255,255,255,0.07)" />
               <circle cx="60" cy="60" r="46" fill="rgba(255,255,255,0.10)" />
-              {/* Steam */}
               <path className="steam1" d="M 48,46 Q 51,40 48,34" fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="2" strokeLinecap="round" />
               <path className="steam2" d="M 60,44 Q 63,38 60,32" fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="2" strokeLinecap="round" />
               <path className="steam3" d="M 72,46 Q 75,40 72,34" fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="2" strokeLinecap="round" />
-              {/* Bowl base */}
               <ellipse cx="60" cy="75" rx="34" ry="12" fill="#78350f" />
               <path d="M 26,62 Q 60,90 94,62 Q 60,78 26,62 Z" fill="#92400e" />
-              {/* Bowl rim */}
               <ellipse cx="60" cy="62" rx="34" ry="8" fill="#b45309" />
-              {/* Food contents */}
               <text x="38" y="60" style={{ fontSize: '22px' }}>🥗</text>
               <text x="62" y="56" style={{ fontSize: '14px' }}>🍗</text>
               <text x="58" y="70" style={{ fontSize: '12px' }}>🫓</text>
             </svg>
           </div>
 
-          {/* Headline */}
           <h1 style={styles.loginHeading}>Hey,<br /><span style={styles.loginHeadingAccent}>Foodie <span className="exclaim">!</span></span></h1>
           <p style={styles.loginBody}>Let's find your favorite food.</p>
 
@@ -282,7 +289,6 @@ export default function App() {
               required
             />
 
-            {/* Dual-pill phone row */}
             <div style={styles.phoneRow}>
               <div style={{ position: 'relative', flexShrink: 0 }}>
                 <button
@@ -337,8 +343,6 @@ export default function App() {
         </div>
       ) : (
         <div style={styles.mainFeed}>
-          {/* <FloatingBubbles progress={100} /> */}
-          {/* Swiggy Image 3 Style Top Header Integration Block */}
           <div style={styles.topGreenSection}>
             <header style={styles.brandHeader}>
               <div>
@@ -346,7 +350,6 @@ export default function App() {
                 <h2 style={styles.brandName}>Cafe Kampify</h2>
               </div>
 
-              {/* Accessibility Font Switcher Layout */}
               <div style={styles.accessibilityGroup}>
                 <div onClick={() => setView('cart')} style={styles.cartFABIcon}>
                   🛒{getCartCount() > 0 && <span style={styles.cartCountBadge}>{getCartCount()}</span>}
@@ -354,7 +357,6 @@ export default function App() {
               </div>
             </header>
 
-            {/* Custom Interactive Search Panel Wrapper */}
             <div style={styles.searchRowContainer}>
               <div style={styles.searchBarWrapper}>
                 <span style={styles.searchIcon}>🔍</span>
@@ -367,7 +369,6 @@ export default function App() {
                 />
               </div>
 
-              {/* NON-VEG Toggle */}
               <div
                 onClick={() => { setNonVegOnly(!nonVegOnly); if (!nonVegOnly) setVegOnly(false); }}
                 style={{
@@ -381,19 +382,14 @@ export default function App() {
                   padding: '8px'
                 }}
               >
-                {/* TOP element */}
                 <span style={{ fontSize: '10px', fontWeight: '800', color: nonVegOnly ? '#fff' : '#444', lineHeight: '1' }}>
                   NON
                 </span>
-
-                {/* BOTTOM element */}
                 <div style={{ ...styles.vegDotBox, borderColor: nonVegOnly ? '#fff' : '#c62828', margin: 0 }}>
                   <div style={{ ...styles.vegInnerDot, backgroundColor: '#c62828' }} />
                 </div>
               </div>
 
-
-              {/* VEG Toggle */}
               <div
                 onClick={() => { setVegOnly(!vegOnly); if (!vegOnly) setNonVegOnly(false); }}
                 style={{ ...styles.vegToggleSquare, backgroundColor: vegOnly ? '#10805c' : '#fff' }}
@@ -405,15 +401,12 @@ export default function App() {
               </div>
             </div>
 
-            {/* Promo Banner Rows Carousel Element */}
             <PromoBanners ordered={ordered} secondsLeft={secondsLeft} />
           </div>
 
           <div style={styles.bottomWhiteSection}>
-            {/* Image 2 Swiggy Style Interactive Category Tabs */}
             <CategoryTabs selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
 
-            {/* Global Auxiliary Filters Menu Row */}
             <div style={styles.filterMenuRow}>
               <button
                 onClick={() => setShowActiveOnly(!showActiveOnly)}
@@ -424,7 +417,6 @@ export default function App() {
               <span style={{ fontSize: '12px', color: '#666' }}>Items: {processedDishes.length}</span>
             </div>
 
-            {/* High Fidelity Food Cards Responsive Matrix Grid */}
             <FoodGrid
               processedDishes={processedDishes}
               cart={cart}
@@ -434,11 +426,8 @@ export default function App() {
             />
           </div>
 
-          {/* Integrated AI Support Engine Float Layer */}
           <AIChatBot menuItems={menuItems} updateCart={updateCart} />
-          {/* <Footer /> */}
 
-          {/* Sticky Order Now Bar */}
           {getCartCount() > 0 && (
             <div style={styles.stickyOrderBar}>
               <div style={styles.stickyOrderInfo}>
@@ -457,31 +446,8 @@ export default function App() {
 }
 
 const styles = {
-  appWrapper: {
-    width: '100%',
-    maxWidth: '100%',
-    minWidth: '10%',
-    margin: '0 auto',
-    minHeight: '100vh',
-    backgroundColor: '#04432f',
-    position: 'relative',
-    overflowX: 'hidden',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  loginContainer: {
-    backgroundColor: '#04432f',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '40px 32px 48px',
-    color: '#fff',
-    position: 'relative',
-    textAlign: 'center',
-    gap: '0px',
-  },
+  appWrapper: { width: '100%', maxWidth: '100%', minWidth: '10%', margin: '0 auto', minHeight: '100vh', backgroundColor: '#04432f', position: 'relative', overflowX: 'hidden', display: 'flex', flexDirection: 'column' },
+  loginContainer: { backgroundColor: '#04432f', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyY: 'center', justifyContent: 'center', padding: '40px 32px 48px', color: '#fff', position: 'relative', textAlign: 'center', gap: '0px' },
   loginTop: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px', zIndex: 2, position: 'relative' },
   loginAccentDot: { color: '#38ef7d', fontSize: '14px' },
   loginAccentTitle: { fontSize: 'clamp(16px, 6vw, 24px)', fontWeight: '900', letterSpacing: '3px', color: '#fff', textTransform: 'uppercase', whiteSpace: 'nowrap', animation: 'titlePulse 2.5s ease-in-out infinite', textShadow: '0 0 20px rgba(56,239,125,0.5), 0 0 40px rgba(56,239,125,0.2)' },
@@ -499,56 +465,27 @@ const styles = {
   ccList: { maxHeight: '200px', overflowY: 'auto' },
   ccItem: { display: 'flex', alignItems: 'center', gap: '8px', padding: '9px 14px', cursor: 'pointer', color: '#333', backgroundColor: '#fff' },
   phoneInput: { flex: 1, padding: '18px 20px', borderRadius: '30px', border: 'none', fontSize: '15px', fontWeight: '600', outline: 'none', backgroundColor: '#fff', color: '#333' },
-
   mainFeed: { display: 'flex', flexDirection: 'column', width: '100%' },
   topGreenSection: { backgroundColor: '#04432f', padding: '16px 16px 8px 16px' },
   brandHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff', marginBottom: '16px' },
   welcomeText: { fontSize: '12px', color: '#a3b8b0' },
   brandName: { fontSize: '24px', fontWeight: '900' },
   accessibilityGroup: { display: 'flex', alignItems: 'center', gap: '8px' },
-  fontBtn: { backgroundColor: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' },
   cartFABIcon: { fontSize: '22px', cursor: 'pointer', position: 'relative', backgroundColor: 'rgba(255,255,255,0.15)', padding: '6px', borderRadius: '50%' },
   cartCountBadge: { position: 'absolute', top: '-4px', right: '-4px', backgroundColor: '#ef4444', color: '#fff', borderRadius: '50%', width: '16px', height: '16px', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700' },
-
   searchRowContainer: { display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px', width: '100%' },
   searchBarWrapper: { flex: 1, backgroundColor: '#fff', borderRadius: '30px', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '8px' },
   searchIcon: { color: '#888', fontSize: '16px' },
   searchInputField: { flex: 1, border: 'none', outline: 'none', fontSize: '14px', backgroundColor: 'transparent' },
-  micIcon: { fontSize: '16px', color: '#10805c' },
   vegToggleSquare: { width: '48px', height: '44px', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' },
   vegDotBox: { width: '12px', height: '12px', border: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' },
   vegInnerDot: { width: '6px', height: '6px', borderRadius: '50%' },
-
   bottomWhiteSection: { backgroundColor: '#f8fafc', borderRadius: '24px 24px 0 0', padding: '20px 14px 100px 14px', flex: 1 },
   filterMenuRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' },
   auxFilterBtn: { border: 'none', padding: '6px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '600', cursor: 'pointer' },
-
-  cardMatrixGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', width: '100%' },
-  foodCard: { backgroundColor: '#fff', borderRadius: '20px', padding: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', overflow: 'hidden' },
-  optionalRequestsContainer: {display: 'flex',flexWrap: 'wrap',gap: '8px',marginBottom: '8px'},
-  optionalRequestButton: {padding: '6px 12px',border: 'none',borderRadius: '4px', cursor: 'pointer',fontSize: '12px', transition: 'background-color 0.2s ease' },
-  cardHeaderArea: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' },
-  vegSquareIndicator: { width: '14px', height: '14px', border: '1.5px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' },
-  vegCircleDot: { width: '6px', height: '6px', borderRadius: '50%' },
-  soldOutBadge: { backgroundColor: '#fee2e2', color: '#ef4444', fontSize: '9px', fontWeight: '700', padding: '2px 6px', borderRadius: '6px' },
-  cardImageWrapper: { width: '100%', height: '100px', borderRadius: '14px', overflow: 'hidden', marginBottom: '8px' },
-  cardVisualAsset: { width: '100%', height: '100px', objectFit: 'cover' },
-  cardFoodTitle: { fontSize: '14px', fontWeight: '800', color: '#1e293b', margin: '0 0 4px 0', lineHeight: '1.2' },
-  cardDetailsRow: { display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#64748b', marginBottom: '6px' },
-  interactiveStarsBar: { display: 'flex', gap: '2px', marginBottom: '12px' },
-  clickStar: { cursor: 'pointer', fontSize: '13px' },
-  cardActionFooter: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' },
-  cardPrice: { fontSize: '16px', fontWeight: '900', color: '#04432f' },
-  initialAddBtn: { backgroundColor: '#e2f2ed', color: '#10805c', border: 'none', padding: '6px 14px', borderRadius: '10px', fontWeight: '800', fontSize: '11px', cursor: 'pointer' },
-  mathQuantityController: { display: 'flex', alignItems: 'center', backgroundColor: '#10805c', borderRadius: '10px', padding: '2px 4px' },
-  qtyMathActionBtn: { background: 'none', border: 'none', color: '#fff', width: '20px', height: '20px', fontSize: '14px', fontWeight: '700', cursor: 'pointer' },
-  qtyNumericDisplay: { color: '#fff', fontSize: '12px', padding: '0 4px', minWidth: '14px', textAlign: 'center', fontWeight: '700' },
-  disabledText: { fontSize: '11px', color: '#cbd5e1', fontWeight: '600' },
   stickyOrderBar: { position: 'fixed', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: '100%', backgroundColor: '#04432f', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 998, boxShadow: '0 -4px 20px rgba(0,0,0,0.2)' },
   stickyOrderInfo: { display: 'flex', flexDirection: 'column' },
   stickyCount: { color: '#fff', fontWeight: '800', fontSize: '15px' },
   stickyLabel: { color: '#a3b8b0', fontSize: '11px' },
-  stickyOrderBtn: { backgroundColor: '#14a375', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '12px', fontWeight: '800', fontSize: '14px', cursor: 'pointer' },
-  footer: { textAlign: 'center', padding: '18px 0 100px', fontSize: '13px', color: 'rgba(255,255,255,0.35)' },
-  footerLink: { color: '#38ef7d', textDecoration: 'none', fontWeight: '700' },
+  stickyOrderBtn: { backgroundColor: '#14a375', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '12px', fontWeight: '800', fontSize: '14px', cursor: 'pointer' }
 };

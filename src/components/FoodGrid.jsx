@@ -114,26 +114,11 @@ function ParallaxCard({ dish, itemQuantity, updateCart, handleRateItem }) {
 
         <h4 style={{ fontSize: '16px', margin: '0px 0 8px' }}>{dish.name}</h4>
 
-            <div style={{ fontSize: '11px', color: '#64748b', marginBottom: '3px' }}>🕒 {dish.time}</div>
-
-            {/* <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <span
-            key={star}
-            onClick={() => dish.available && handleRateItem(dish.id, star)}
-            style={{
-              cursor: 'pointer',
-              color: star <= Math.round(dish.initialRating) ? '#f59e0b' : '#cbd5e1',
-            }}
-          >
-            ★
-          </span>
-        ))}
-      </div> */}
+        <div style={{ fontSize: '11px', color: '#64748b', marginBottom: '3px' }}>🕒 {dish.time}</div>
 
         {/* Optional Requests Section */}
         {dish.optionalRequests && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '4px', justifyContent: 'center', }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '4px', justifyContent: 'center' }}>
             {dish.optionalRequests.map((option, index) => (
               <button
                 key={index}
@@ -162,35 +147,23 @@ function ParallaxCard({ dish, itemQuantity, updateCart, handleRateItem }) {
           <span style={{ color: '#c62828', fontSize: '12px' }}>Unavailable</span>
         ) : itemQuantity === 0 ? (
           <button
-            onClick={() => updateCart(dish.id, 1)}
-                        style={{ backgroundColor: '#e2f2ed', color: '#10805c', border: 'none', padding: '6px 14px', borderRadius: '10px', fontWeight: '800', fontSize: '15px', cursor: 'pointer' }}
+            onClick={() => updateCart(dish.id, 1, selectedOptions)}
+            style={{ backgroundColor: '#e2f2ed', color: '#10805c', border: 'none', padding: '6px 14px', borderRadius: '10px', fontWeight: '800', fontSize: '15px', cursor: 'pointer' }}
           >
             ADD +
           </button>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <button
-              onClick={() => updateCart(dish.id, -1)}
-              style={{
-                padding: '4px 8px',
-                backgroundColor: '#e2e8f0',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
+              onClick={() => updateCart(dish.id, -1, selectedOptions)}
+              style={{ padding: '4px 8px', backgroundColor: '#e2e8f0', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
             >
               −
             </button>
             <span style={{ fontSize: '14px' }}>{itemQuantity}</span>
             <button
-              onClick={() => updateCart(dish.id, 1)}
-              style={{
-                padding: '4px 8px',
-                backgroundColor: '#e2e8f0',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
+              onClick={() => updateCart(dish.id, 1, selectedOptions)}
+              style={{ padding: '4px 8px', backgroundColor: '#e2e8f0', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
             >
               +
             </button>
@@ -205,7 +178,14 @@ export default function FoodGrid({ processedDishes, cart, updateCart, handleRate
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '16px' }}>
       {processedDishes.map((dish) => {
-        const itemQuantity = cart[dish.id] || 0;
+        // Safe reduction summing only integers from matched base IDs
+        const itemQuantity = Object.values(cart).reduce((total, entry) => {
+          if (entry && typeof entry === 'object' && entry.baseId === dish.id) {
+            return total + (entry.qty || 0);
+          }
+          return total;
+        }, 0);
+
         return (
           <ParallaxCard
             key={dish.id}
