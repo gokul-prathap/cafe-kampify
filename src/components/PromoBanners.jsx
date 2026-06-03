@@ -92,7 +92,7 @@ export default function PromoBanners() {
                                 <h2 style={styles.title}>Good Food Takes Time</h2>
 
                                 <p style={styles.subtitle}>
-                                    Every dish is freshly prepared only after you place your order.
+                                    We prepare every dish fresh, only after you place your order. This ensures the best taste and quality, but it also means we need a bit of time to work our magic.
                                 </p>
                             </div>
 
@@ -121,7 +121,7 @@ export default function PromoBanners() {
                                         ? `⏳ Order ready in: ${fmt(activeSecondsLeft)}`
                                         : `✅ Order ready! Call kitchen if needed.`
                                 ) : (
-                                    `⏱ Average Preparation Time: 45 Minutes`
+                                    `⏱ To maintain quality and taste, please allow us a minimum of 45 Minutes for preparation`
                                 )}
                             </div>
 

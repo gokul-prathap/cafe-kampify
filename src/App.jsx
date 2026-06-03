@@ -41,16 +41,14 @@ export default function App() {
   );
   const selectedCC = COUNTRY_CODES.find(c => c.code === countryCode) || COUNTRY_CODES[0];
 
-  // Compute login form fill progress 0-100
   const nameProgress = Math.min(1, username.trim().length / 10);
   const phoneProgress = Math.min(1, phone.trim().length / 10);
   const loginProgress = Math.round((nameProgress + phoneProgress) / 2 * 100);
 
-  // Keypress interaction states
   const [nameFlip, setNameFlip] = useState(0);
   const [phoneFlip, setPhoneFlip] = useState(0);
   const keypressFlip = nameFlip + phoneFlip;
-  const [iconSize, setIconSize] = useState(200);  // base size 200px
+  const [iconSize, setIconSize] = useState(200);
   const [iconJumping, setIconJumping] = useState(false);
   const iconSizeRef = useRef(200);
   const jumpTimerRef = useRef(null);
@@ -155,14 +153,18 @@ export default function App() {
 
   const processedDishes = menuItems.filter(item => {
     const matchSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchCat = selectedCategory === 'ALL' || item.category === selectedCategory;
+    const matchCat = selectedCategory === 'ALL' ||
+      item.category === selectedCategory ||
+      (selectedCategory === 'STEWS' && item.name.toLowerCase().includes('stew')) ||
+      (selectedCategory === 'SEAFOOD' && (item.id.startsWith('tl') || item.id.startsWith('pf') || item.id.startsWith('kj'))) ||
+      (selectedCategory === 'MEAT FAVOURITES' && (item.category === 'CRAB' || item.category === 'PRAWNS'));
     const matchVeg = !vegOnly || item.isVeg;
     const matchNonVeg = !nonVegOnly || !item.isVeg;
     const matchAvail = !showActiveOnly || item.available;
+
     return matchSearch && matchCat && matchVeg && matchNonVeg && matchAvail;
   });
 
-  // Function to reset the cart
   const handleClearCart = () => {
     setCart({});
   };
@@ -371,13 +373,12 @@ export default function App() {
                 style={{
                   ...styles.vegToggleSquare,
                   backgroundColor: nonVegOnly ? '#c62828' : '#fff',
-                  // Force a vertical column stack
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '6px', /* Adjust this gap to bring them closer or further apart */
-                  padding: '8px' /* Ensure uniform padding around the stacked contents */
+                  gap: '6px',
+                  padding: '8px'
                 }}
               >
                 {/* TOP element */}
@@ -455,7 +456,6 @@ export default function App() {
   );
 }
 
-// Fluid Responsive Styling Configuration
 const styles = {
   appWrapper: {
     width: '100%',
@@ -525,6 +525,8 @@ const styles = {
 
   cardMatrixGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', width: '100%' },
   foodCard: { backgroundColor: '#fff', borderRadius: '20px', padding: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', overflow: 'hidden' },
+  optionalRequestsContainer: {display: 'flex',flexWrap: 'wrap',gap: '8px',marginBottom: '8px'},
+  optionalRequestButton: {padding: '6px 12px',border: 'none',borderRadius: '4px', cursor: 'pointer',fontSize: '12px', transition: 'background-color 0.2s ease' },
   cardHeaderArea: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' },
   vegSquareIndicator: { width: '14px', height: '14px', border: '1.5px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' },
   vegCircleDot: { width: '6px', height: '6px', borderRadius: '50%' },

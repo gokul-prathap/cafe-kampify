@@ -204,6 +204,7 @@ export default function CartPage({ cart = {}, menuItems, updateCart, onBack, use
         });
 
         if (hasChanges) {
+          console.log('mapped',mapped)
           localStorage.setItem('kampify_orders_list', JSON.stringify(mapped));
           return mapped;
         }
@@ -215,7 +216,9 @@ export default function CartPage({ cart = {}, menuItems, updateCart, onBack, use
   }, []);
 
   // Derive runtime attributes for the latest order context to feed the generic top bar
-  const latestOrder = orders[0];
+  const storedOrders = JSON.parse(localStorage.getItem('kampify_orders_list')) || [];
+  const latestOrder = storedOrders.sort((a, b) => b.timestamp - a.timestamp)[0];
+  const activeOrderItems = latestOrder ? latestOrder.items : [];
   let genericTimeLeft = 0;
   let isGenericTimerActive = false;
 
@@ -231,38 +234,100 @@ export default function CartPage({ cart = {}, menuItems, updateCart, onBack, use
   }, 0);
 
   const checkoutViaWhatsApp = () => {
-    let orderSlip = `*Cafe Kampify Order*\n`;
-    orderSlip += `*Customer Name:* ${username}\n`;
-    orderSlip += `-------------------------\n`;
-    
+    const orderId = `KFY-${Date.now().toString().slice(-6)}`;
+
+    let orderSlip = `* ＣＡＦＥ ＫＡＭＰＩＦＹ*
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+🆔 *Order:* ${orderId}
+👤 *Customer:* ${username || "Guest"}
+
+━━━━━━━━━━━━━━━━━━━━━━
+📋 *ORDER ITEMS*
+━━━━━━━━━━━━━━━━━━━━━━
+`;
+
     const snapshotItems = [];
-    activeCartEntries.forEach(([id, qty]) => {
+    const instructionLines = [];
+
+    activeCartEntries.forEach(([id, itemQuantity]) => {
       const dish = menuItems.find(m => m.id === id);
-      if (dish) {
-        orderSlip += `• ${dish.name} x ${qty} = ₹${dish.price * qty}\n`;
-        snapshotItems.push({ name: dish.name, qty, priceTotal: dish.price * qty });
+
+      if (!dish) return;
+
+      const vegIcon = dish.isVeg ? "🟢" : "🔴";
+
+      orderSlip += `
+${vegIcon} ${dish.name} → *${itemQuantity}*
+`;
+
+      if (dish.optionalRequests?.length) {
+        instructionLines.push(
+          `• ${itemQuantity} ${dish.name} — ${dish.optionalRequests.join(", ")}`
+        );
       }
+
+      snapshotItems.push({
+        id: dish.id,
+        name: dish.name,
+        qty: itemQuantity,
+        priceTotal: dish.price * itemQuantity
+      });
     });
-    
-    orderSlip += `-------------------------\n`;
-    orderSlip += `*Grand Total:* ₹${totalCost}\n\n`;
-    orderSlip += `_Order processed via mobile client app._`;
-    
+
+    if (instructionLines.length > 0) {
+      orderSlip += `
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ *SPECIAL INSTRUCTIONS*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${instructionLines.join("\n")}
+`;
+    }
+
+    orderSlip += `
+
+━━━━━━━━━━━━━━━━━━━━━━
+💰 *BILL SUMMARY*
+━━━━━━━━━━━━━━━━━━━━━━
+
+🛒 Total Items: ${snapshotItems.reduce(
+      (sum, item) => sum + item.qty,
+      0
+    )}
+
+💵 *TOTAL BILL: ₹${totalCost}*
+
+━━━━━━━━━━━━━━━━━━━━━━
+☕ *CAFE KAMPIFY*
+━━━━━━━━━━━━━━━━━━━━━━
+`;
+
     const newOrder = {
-      id: `order_${Date.now()}`,
+      id: orderId,
       timestamp: Date.now(),
-      durationSeconds: 2700, 
+      durationSeconds: 2700,
       total: totalCost,
       items: snapshotItems
     };
-  
+
     const updatedOrdersList = [newOrder, ...orders];
+
     setOrders(updatedOrdersList);
-    localStorage.setItem('kampify_orders_list', JSON.stringify(updatedOrdersList));
-  
-    window.open(`https://wa.me/919901299899?text=${encodeURIComponent(orderSlip)}`, '_blank');
-    
-    if (clearCart) {
+console.log(updatedOrdersList)
+    localStorage.setItem(
+      "kampify_orders_list",
+      JSON.stringify(updatedOrdersList)
+    );
+
+    window.open(
+      `https://wa.me/919901299899?text=${encodeURIComponent(orderSlip)}`,
+      "_blank"
+    );
+
+    if (typeof clearCart === "function") {
       clearCart();
     }
   };
