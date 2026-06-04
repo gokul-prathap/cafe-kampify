@@ -168,18 +168,20 @@ export default function App() {
 
   const processedDishes = menuItems.filter(item => {
     const matchSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchCat = selectedCategory === 'ALL' ||
-      item.category === selectedCategory ||
+    const matchCat = (
+      selectedCategory === 'ALL' ||
+      (selectedCategory === 'BEVERAGES' && (item.category === 'BEVERAGES' || item.category === 'HOT DRINKS')) ||
+      (selectedCategory === 'SEAFOOD' && (item.category === 'SEAFOOD' || item.category === 'BACKWATER FISH SPECIALS')) ||
       (selectedCategory === 'STEWS' && item.name.toLowerCase().includes('stew')) ||
-      (selectedCategory === 'SEAFOOD' && (item.id.startsWith('tl') || item.id.startsWith('pf') || item.id.startsWith('kj'))) ||
-      (selectedCategory === 'MEAT FAVOURITES' && (item.category === 'CRAB' || item.category === 'PRAWNS'));
+      (selectedCategory === 'MEAT FAVOURITES' && (item.category === 'CRAB' || item.category === 'PRAWNS')) ||
+      item.category === selectedCategory
+    );
     const matchVeg = !vegOnly || item.isVeg;
     const matchNonVeg = !nonVegOnly || !item.isVeg;
     const matchAvail = !showActiveOnly || item.available;
-
+  
     return matchSearch && matchCat && matchVeg && matchNonVeg && matchAvail;
   });
-
   const handleClearCart = () => {
     setCart({});
   };
@@ -401,7 +403,7 @@ export default function App() {
               </div>
             </div>
 
-            <PromoBanners ordered={ordered} secondsLeft={secondsLeft} />
+            <PromoBanners ordered={ordered} secondsLeft={secondsLeft} cart={cart} updateCart={updateCart} handleRateItem={handleRateItem} />
           </div>
 
           <div style={styles.bottomWhiteSection}>

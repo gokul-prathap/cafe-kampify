@@ -12,7 +12,7 @@ export default function PromoBanners({ cart, updateCart, handleRateItem }) {
     const [isHovered, setIsHovered] = useState(false);
     const [showOrderInfo, setShowOrderInfo] = useState(false);
 
-    const [bubbleY, setBubbleY] = useState(220); 
+    const [bubbleY, setBubbleY] = useState(220);
     const [isDragging, setIsDragging] = useState(false);
     const dragStartY = useRef(0);
     const dragStartBubbleY = useRef(0);
@@ -132,7 +132,7 @@ export default function PromoBanners({ cart, updateCart, handleRateItem }) {
     }, [isDragging]);
 
     const startDragHandler = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         const clientY = e.clientY || (e.touches && e.touches[0].clientY);
         dragStartY.current = clientY;
         dragStartBubbleY.current = bubbleY;
@@ -333,109 +333,69 @@ export default function PromoBanners({ cart, updateCart, handleRateItem }) {
                     box-shadow: 0 0 15px rgba(245, 158, 11, 0.45);
                 }
                 .trace-glow-border::before {
-                    content: '';
-                    position: absolute;
-                    z-index: -2;
-                    left: -50%;
-                    top: -50%;
-                    width: 200%;
-                    height: 200%;
-                    background-color: transparent;
-                    background-repeat: no-repeat;
-                    background-size: 50% 50%, 50% 50%;
-                    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
-                    background-image: conic-gradient(from 0deg, transparent 70%, #ffffff 90%, transparent 100%);
-                    animation: orbitLightTracer 4s linear infinite;
+                    content: ''; position: absolute; z-index: -2; left: -50%; top: -50%; width: 200%; height: 200%; background-color: transparent; background-repeat: no-repeat; background-size: 50% 50%, 50% 50%; background-position: 0 0, 100% 0, 100% 100%, 0 100%; background-image: conic-gradient(from 0deg, transparent 70%, #ffffff 90%, transparent 100%); animation: orbitLightTracer 4s linear infinite;
                 }
                 .trace-glow-border::after {
-                    content: '';
-                    position: absolute;
-                    z-index: -1;
-                    left: 2px;
-                    top: 2px;
-                    width: calc(100% - 4px);
-                    height: calc(100% - 4px);
-                    background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
-                    border-radius: 10px;
+                    content: ''; position: absolute; z-index: -1; left: 2px; top: 2px; width: calc(100% - 4px); height: calc(100% - 4px); background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); border-radius: 10px;
                 }
 
                 .minimized-scroll-container {
-                    overflow-x: auto !important;
-                    white-space: nowrap !important;
-                    width: 100% !important;
-                    padding: 4px 2px 10px 2px !important;
-                    box-sizing: border-box !important;
-                    scrollbar-width: none !important;
+                    overflow-x: auto !important; white-space: nowrap !important; width: 100% !important; padding: 4px 2px 10px 2px !important; box-sizing: border-box !important; scrollbar-width: none !important;
                 }
                 .minimized-scroll-container::-webkit-scrollbar {
                     display: none !important;
                 }
                 
                 .minimized-scroll-container > div {
-                    display: flex !important;
-                    flex-direction: row !important;
-                    flex-wrap: nowrap !important;
-                    gap: 10px !important;
-                    width: max-content !important;
-                    pointer-events: auto !important;
+                    display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; gap: 10px !important; width: max-content !important; pointer-events: auto !important;
                 }
                 
-                /* UNIFORM & MINIATURE OVERRIDES FOR ALL FOOD CARDS IN MINIMIZED VIEWS */
                 .minimized-scroll-container > div > div {
-                    flex: 0 0 145px !important;
-                    max-width: 145px !important;
-                    height: 195px !important;  /* Uniform fixed heights ensure no misalignment */
-                    margin-bottom: 0 !important;
-                    display: inline-flex !important;
-                    flex-direction: column !important;
-                    white-space: normal !important;
-                    padding: 8px 6px !important;
-                    border-radius: 10px !important;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
-                    pointer-events: auto !important;
-                    position: relative !important;
-                    justify-content: space-between !important;
-                    background: rgb(255, 255, 255) !important;
+                    flex: 33 0 200px !important; max-width: 215px !important; height: 100% !important; margin-bottom: -7px !important; display: inline-flex !important; flex-direction: column !important; white-space: normal !important; padding: 0px 7px !important; border-radius: 10px !important; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important; pointer-events: auto !important; position: relative !important; justify-content: space-between !important; background: rgb(255, 255, 255) !important; overflow: hidden !important;
                 }
 
                 .minimized-scroll-container > div > div h4 {
-                    font-size: 10px !important;
-                    margin: 1px 0 !important;
-                    font-weight: 700 !important;
-                    line-height: 1.1 !important;
+                    font-size: 11px !important; margin: 2px 0 !important; font-weight: 700 !important; line-height: 1.2 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; width: 100% !important;
                 }
+                /* Locate the .minimized-scroll-container > div > div img rule block inside your <style> element and verify it matches this: */
                 .minimized-scroll-container > div > div img {
                     height: 75px !important;
                     width: 100% !important;
                     object-fit: cover !important;
                     border-radius: 8px !important;
+                    transform: none !important; /* Forces background translations to stay strictly centered */
                 }
                 .minimized-scroll-container > div > div div[style*="height: 160px"] {
-                    height: 80px !important;
+                    height: 80px !important; position: relative !important;
                 }
                 .minimized-scroll-container > div > div span[style*="font-size: 30px"] {
-                    font-size: 13px !important;
+                    font-size: 14px !important;
                 }
                 .minimized-scroll-container > div > div span[style*="font-size: 12px"] {
-                    font-size: 8px !important;
+                    font-size: 9px !important;
                 }
                 .minimized-scroll-container > div > div div[style*="font-size: 11px"] {
-                    font-size: 8px !important;
+                    font-size: 9px !important;
                 }
                 .minimized-scroll-container > div > div button {
-                    padding: 3px 6px !important;
-                    font-size: 9px !important;
-                    border-radius: 5px !important;
-                    cursor: pointer !important;
+                    padding: 4px 7px !important; font-size: 10px !important; border-radius: 5px !important; cursor: pointer !important;
                 }
                 .minimized-scroll-container > div > div div[style*="gap: 8px"] {
-                    gap: 3px !important;
+                    gap: 4px !important;
                 }
                 .minimized-scroll-container > div > div div[style*="gap: 8px"] button {
-                    padding: 1px 3px !important;
+                    padding: 2px 4px !important;
                 }
+                
                 .minimized-scroll-container > div > div div[style*="flex-wrap: wrap"] {
-                    display: none !important;
+                    display: flex !important; flex-wrap: wrap !important; gap: 3px !important; max-height: 28px !important; overflow: hidden !important; margin-bottom: 2px !important; justify-content: center !important;
+                }
+                .minimized-scroll-container > div > div div[style*="flex-wrap: wrap"] button {
+                    font-size: 8px !important; padding: 1px 4px !important; border-radius: 4px !important;
+                }
+
+                .minimized-scroll-container > div > div div[style*="position: absolute"][style*="top: -15%"] ~ div {
+                    position: absolute !important; bottom: 6px !important; right: 6px !important; background-color: rgba(0, 0, 0, 0.7) !important; color: #ffffff !important; font-size: 9px !important; padding: 2px 6px !important; border-radius: 6px !important; font-weight: 600 !important; transform: none !important; width: auto !important; text-align: center !important;
                 }
 
                 @keyframes buttonOrbitTracer {
@@ -445,49 +405,20 @@ export default function PromoBanners({ cart, updateCart, handleRateItem }) {
                 }
 
                 .button-trace-glow {
-                    position: relative;
-                    z-index: 1;
-                    overflow: hidden;
+                    position: relative; z-index: 1; overflow: hidden;
                 }
                 .button-trace-glow::before {
-                    content: '';
-                    position: absolute;
-                    z-index: -2;
-                    left: -50%;
-                    top: -50%;
-                    width: 200%;
-                    height: 200%;
-                    background-image: conic-gradient(from 0deg, transparent 60%, rgba(255,255,255,0.9) 90%, transparent 100%);
-                    animation: buttonOrbitTracer 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+                    content: ''; position: absolute; z-index: -2; left: -50%; top: -50%; width: 200%; height: 200%; background-image: conic-gradient(from 0deg, transparent 60%, rgba(255,255,255,0.9) 90%, transparent 100%); animation: buttonOrbitTracer 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
                 }
                 .button-trace-glow::after {
-                    content: '';
-                    position: absolute;
-                    z-index: -1;
-                    left: 1px;
-                    top: 1px;
-                    width: calc(100% - 2px);
-                    height: calc(100% - 2px);
-                    background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
-                    border-radius: 11px;
+                    content: ''; position: absolute; z-index: -1; left: 1px; top: 1px; width: calc(100% - 2px); height: calc(100% - 2px); background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); border-radius: 11px;
                 }
             `}</style>
 
             {/* DRAGGABLE, SIDE-STICKING MOVEABLE FLOATING LIVE WIDGET */}
             {hasActiveCookingOrder && (
-                <div
-                    style={{
-                        ...styles.screenFloatingWidget,
-                        top: `${bubbleY}px`,
-                        cursor: isDragging ? 'grabbing' : 'grab'
-                    }}
-                    onMouseDown={startDragHandler}
-                    onTouchStart={startDragHandler}
-                >
-                    <div
-                        onClick={handleBubbleClick}
-                        style={styles.stickySideBubble}
-                    >
+                <div style={{ ...styles.screenFloatingWidget, top: `${bubbleY}px`, cursor: isDragging ? 'grabbing' : 'grab' }} onMouseDown={startDragHandler} onTouchStart={startDragHandler}>
+                    <div onClick={handleBubbleClick} style={styles.stickySideBubble}>
                         ↕️ {fmt(activeSecondsLeft)}
                     </div>
 
@@ -505,81 +436,38 @@ export default function PromoBanners({ cart, updateCart, handleRateItem }) {
                 </div>
             )}
 
-            <div style={{
-                ...styles.container,
-                transform: `translateY(${-scrollOffset * 0.45}px)`,
-                opacity: scrollOpacity
-            }}>
-                <div
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                    style={styles.heroBanner}
-                >
+            <div style={{ ...styles.container, transform: `translateY(${-scrollOffset * 0.45}px)`, opacity: scrollOpacity }}>
+                <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} style={styles.heroBanner}>
                     <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 1 }}>
                         <FloatingBubbles progress={5} />
                     </div>
 
-                    <button
-                        onClick={() => setIsMinimized(!isMinimized)}
-                        style={styles.toggleButton}
-                    >
+                    <button onClick={() => setIsMinimized(!isMinimized)} style={styles.toggleButton}>
                         {isMinimized ? "Expand Offers ▼" : "Collapse ▲"}
                     </button>
 
-                    <button
-                        onClick={() => handleNavigation(-1)}
-                        style={{ ...styles.arrowButton, left: "10px" }}
-                        aria-label="Previous Slide"
-                    >
+                    <button onClick={() => handleNavigation(-1)} style={{ ...styles.arrowButton, left: "10px" }} aria-label="Previous Slide">
                         ◀
                     </button>
 
-                    <button
-                        onClick={() => handleNavigation(1)}
-                        style={{ ...styles.arrowButton, right: "10px" }}
-                        aria-label="Next Slide"
-                    >
+                    <button onClick={() => handleNavigation(1)} style={{ ...styles.arrowButton, right: "10px" }} aria-label="Next Slide">
                         ▶
                     </button>
 
                     <div style={{ position: "relative", zIndex: 2, height: "100%", width: "100%" }}>
                         {currentSlideData.hasBannerImage && (
-                            <img
-                                src={kampifyBanner}
-                                alt="Cafe Kampify"
-                                style={{
-                                    ...styles.bannerImage,
-                                    maxHeight: isMinimized ? "250px" : "140px"
-                                }}
-                            />
+                            <img src={kampifyBanner} alt="Cafe Kampify" style={{ ...styles.bannerImage, maxHeight: isMinimized ? "250px" : "140px" }} />
                         )}
 
-                        <div style={{
-                            ...styles.content,
-                            paddingTop: isMinimized ? "12px" : "16px",
-                            position: "relative",
-                            zIndex: 4
-                        }}>
-                            <div
-                                className={animateTrigger ? "premium-carousel-animate" : ""}
-                                style={styles.carouselStage(isMinimized)}
-                            >
+                        <div style={{ ...styles.content, paddingTop: isMinimized ? "12px" : "16px", position: "relative", zIndex: 4 }}>
+                            <div className={animateTrigger ? "premium-carousel-animate" : ""} style={styles.carouselStage(isMinimized)}>
                                 {currentSlideData.render()}
                             </div>
 
                             {activeSlides.length > 1 && (
                                 <div style={styles.dotTrack}>
                                     {activeSlides.map((_, idx) => (
-                                        <button
-                                            key={idx}
-                                            onClick={() => { setAnimateTrigger(false); setCurrentSlide(idx); }}
-                                            style={{
-                                                ...styles.navDot,
-                                                background: currentSlide === idx ? "#38ef7d" : "rgba(255,255,255,0.25)",
-                                                transform: currentSlide === idx ? "scale(1.2)" : "scale(1)"
-                                            }}
-                                            aria-label={`Go to slide ${idx + 1}`}
-                                        />
+                                        <button key={idx} onClick={() => { setAnimateTrigger(false); setCurrentSlide(idx); }} style={{ ...styles.navDot, background: currentSlide === idx ? "#38ef7d" : "rgba(255,255,255,0.25)", transform: currentSlide === idx ? "scale(1.2)" : "scale(1)" }} aria-label={`Go to slide ${idx + 1}`} />
                                     ))}
                                 </div>
                             )}
@@ -592,186 +480,22 @@ export default function PromoBanners({ cart, updateCart, handleRateItem }) {
 }
 
 const styles = {
-    container: {
-        width: "100%",
-        marginBottom: "16px",
-        position: "relative",
-        zIndex: 5,
-        transition: "transform 0.2s linear, opacity 0.2s linear",
-        willChange: "transform, opacity"
-    },
-    heroBanner: {
-        background: "linear-gradient(135deg, #0d3d2a 0%, #12503a 50%, #176446 100%)",
-        borderRadius: "22px",
-        overflow: "hidden",
-        position: "relative",
-        border: "1px solid rgba(56, 239, 125, 0.15)",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-    },
-    toggleButton: {
-        position: "absolute",
-        top: "12px",
-        right: "12px",
-        zIndex: 120,
-        background: "rgba(255, 255, 255, 0.12)",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        borderRadius: "12px",
-        color: "#ffffff",
-        padding: "6px 12px",
-        fontSize: "11px",
-        fontWeight: "700",
-        cursor: "pointer",
-        backdropFilter: "blur(6px)",
-        transition: "all 0.2s ease",
-    },
-    arrowButton: {
-        position: "absolute",
-        top: "55%",
-        transform: "translateY(-50%)",
-        zIndex: 120,
-        background: "rgba(255, 255, 255, 0.06)",
-        border: "1px solid rgba(255, 255, 255, 0.12)",
-        borderRadius: "50%",
-        color: "#ffffff",
-        width: "32px",
-        height: "32px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "12px",
-        cursor: "pointer",
-        backdropFilter: "blur(10px)",
-        boxShadow: "0 0 10px rgba(255,255,255,0.1)",
-        transition: "all 0.2s ease-in-out",
-        outline: "none",
-    },
-    bannerImage: {
-        width: "100%",
-        height: "100%",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        objectFit: "contain",
-        paddingTop: "8px",
-        objectPosition: "top center",
-        animation: "floatBanner 3s ease-in-out infinite",
-        pointerEvents: "none",
-        userSelect: "none",
-        zIndex: 1,
-        transition: "max-height 0.3s ease-in-out",
-    },
-    content: {
-        padding: "0 36px 12px",
-        position: "relative"
-    },
-    carouselStage: (isMinimized) => ({
-        height: isMinimized ? "250px" : "auto",
-        minHeight: "100px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        width: "100%",
-        position: "relative",
-        zIndex: 3
-    }),
-    screenFloatingWidget: {
-        position: "fixed",
-        right: "0px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-end",
-        zIndex: 99999,
-        touchAction: "none",
-        userSelect: "none"
-    },
-    stickySideBubble: {
-        background: "linear-gradient(135deg, #0d3d2a 0%, #061c13 100%)",
-        border: "1px solid rgba(56, 239, 125, 0.6)",
-        borderRight: "none",
-        borderRadius: "20px 0 0 20px",
-        padding: "8px 12px 8px 10px",
-        fontSize: "11px",
-        fontWeight: "900",
-        color: "#ffffff",
-        boxShadow: "-4px 4px 12px rgba(0,0,0,0.4)",
-        display: "flex",
-        alignItems: "center",
-        userSelect: "none"
-    },
-    sideInfoDropdown: {
-        background: "rgba(8, 38, 26, 0.98)",
-        border: "1px solid rgba(56, 239, 125, 0.4)",
-        borderRadius: "8px",
-        padding: "8px 12px",
-        width: "150px",
-        boxShadow: "-4px 6px 20px rgba(0,0,0,0.5)",
-        marginRight: "6px",
-        marginTop: "6px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "4px"
-    },
-    miniInfoLine: {
-        display: "flex",
-        justifyContent: "space-between",
-        fontSize: "10px",
-        fontWeight: "600",
-        color: "rgba(255,255,255,0.9)",
-        lineHeight: "1.2"
-    },
-    gradientPrepBox: (isMinimized) => ({
-        padding: isMinimized ? "6px 6px" : "12px 16px",
-        textAlign: "center",
-        fontWeight: "700",
-        background: 'white',
-        fontSize: isMinimized ? "10px" : "12px",
-        lineHeight: "1.4",
-        color: "#ffffff",
-        position: "absolute",
-        bottom: "16px",
-        left: "16px",
-        right: "16px",
-        width: "calc(100% - 32px)",
-        boxSizing: "border-box"
-    }),
-    slideWrap: {
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        display: "flex",
-        flexDirection: "column"
-    },
-    titleSection: {
-        textAlign: "center",
-        marginBottom: "10px",
-        marginTop: "16px"
-    },
-    title: {
-        margin: "0",
-        color: "#ffffff",
-        fontSize: "18px",
-        fontWeight: "900",
-        lineHeight: "1.2",
-    },
-    subtitle: {
-        marginTop: "3px",
-        marginBottom: "0",
-        color: "rgba(255,255,255,0.75)",
-        fontSize: "11px",
-    },
-    dotTrack: {
-        display: "flex",
-        justifyContent: "center",
-        gap: "6px",
-        marginTop: "6px",
-    },
-    navDot: {
-        width: "6px",
-        height: "6px",
-        borderRadius: "50%",
-        border: "none",
-        padding: "0",
-        cursor: "pointer",
-        transition: "all 0.2s ease",
-    }
+    container: { width: "100%", marginBottom: "16px", position: "relative", zIndex: 5, transition: "transform 0.2s linear, opacity 0.2s linear", willChange: "transform, opacity" },
+    heroBanner: { background: "linear-gradient(135deg, #0d3d2a 0%, #12503a 50%, #176446 100%)", borderRadius: "22px", overflow: "hidden", position: "relative", border: "1px solid rgba(56, 239, 125, 0.15)", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" },
+    toggleButton: { position: "absolute", top: "12px", right: "12px", zIndex: 120, background: "rgba(255, 255, 255, 0.12)", border: "1px solid rgba(255, 255, 255, 0.2)", borderRadius: "12px", color: "#ffffff", padding: "6px 12px", fontSize: "11px", fontWeight: "700", cursor: "pointer", backdropFilter: "blur(6px)", transition: "all 0.2s ease" },
+    arrowButton: { position: "absolute", top: "55%", transform: "translateY(-50%)", zIndex: 120, background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", borderRadius: "50%", color: "#ffffff", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", cursor: "pointer", backdropFilter: "blur(10px)", boxShadow: "0 0 10px rgba(255,255,255,0.1)", transition: "all 0.2s ease-in-out", outline: "none" },
+    bannerImage: { width: "100%", height: "100%", position: "absolute", top: 0, left: 0, objectFit: "contain", paddingTop: "8px", objectPosition: "top center", animation: "floatBanner 3s ease-in-out infinite", pointerEvents: "none", userSelect: "none", zIndex: 1, transition: "max-height 0.3s ease-in-out" },
+    content: { padding: "0 36px 12px", position: "relative" },
+    carouselStage: (isMinimized) => ({ height: isMinimized ? "250px" : "auto", minHeight: "100px", display: "flex", flexDirection: "column", justifyContent: "center", width: "100%", position: "relative", zIndex: 3 }),
+    screenFloatingWidget: { position: "fixed", right: "0px", display: "flex", flexDirection: "column", alignItems: "flex-end", zIndex: 99999, touchAction: "none", userSelect: "none" },
+    stickySideBubble: { background: "linear-gradient(135deg, #0d3d2a 0%, #061c13 100%)", border: "1px solid rgba(56, 239, 125, 0.6)", borderRight: "none", borderRadius: "20px 0 0 20px", padding: "8px 12px 8px 10px", fontSize: "11px", fontWeight: "900", color: "#ffffff", boxShadow: "-4px 4px 12px rgba(0,0,0,0.4)", display: "flex", alignItems: "center", userSelect: "none" },
+    sideInfoDropdown: { background: "rgba(8, 38, 26, 0.98)", border: "1px solid rgba(56, 239, 125, 0.4)", borderRadius: "8px", padding: "8px 12px", width: "150px", boxShadow: "-4px 6px 20px rgba(0,0,0,0.5)", marginRight: "6px", marginTop: "6px", display: "flex", flexDirection: "column", gap: "4px" },
+    miniInfoLine: { display: "flex", justifyContent: "space-between", fontSize: "10px", fontWeight: "600", color: "rgba(255,255,255,0.9)", lineHeight: "1.2" },
+    gradientPrepBox: (isMinimized) => ({ padding: isMinimized ? "6px 6px" : "12px 16px", textAlign: "center", fontWeight: "700", background: 'white', fontSize: isMinimized ? "10px" : "12px", lineHeight: "1.4", color: "#ffffff", position: "absolute", bottom: "16px", left: "16px", right: "16px", width: "calc(100% - 32px)", boxSizing: "border-box" }),
+    slideWrap: { width: "100%", height: "100%", position: "relative", display: "flex", flexDirection: "column" },
+    titleSection: { textAlign: "center", marginBottom: "10px", marginTop: "16px" },
+    title: { margin: "0", color: "#ffffff", fontSize: "18px", fontWeight: "900", lineHeight: "1.2" },
+    subtitle: { marginTop: "3px", marginBottom: "0", color: "rgba(255,255,255,0.75)", fontSize: "11px" },
+    dotTrack: { display: "flex", justifyContent: "center", gap: "8px", marginTop: "16px", position: "relative", zIndex: 10 },
+    navDot: { width: "10px", height: "10px", borderRadius: "50%", border: "1px solid rgba(255, 255, 255, 0.6)", background: "rgba(255, 255, 255, 0.3)", cursor: "pointer", transition: "transform 0.2s ease, background 0.2s ease", outline: "none", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)" }
 };

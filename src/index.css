@@ -30,6 +30,76 @@
   }
 }
 
+@keyframes loopTimeBubble {
+  0% {
+    transform: scale(0);
+    border-radius: 10px 10px 10px;
+    width: 24px;
+    height: 24px;
+    color: transparent;
+  }
+
+  15% {
+    transform: scale(1);
+    border-radius: 10px 10px 10px;
+    width: 24px;
+    height: 24px;
+    color: #ffffff;
+  }
+
+  30% {
+    transform: scale(1);
+    border-radius: 10px 10px 10px;
+    width: 72px;
+    height: 22px;
+    color: #ffffff;
+  }
+
+  85% {
+    transform: scale(1);
+    border-radius: 10px 10px 10px;
+    width: 72px;
+    height: 22px;
+    color: #ffffff;
+    
+  }
+  95%{
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    border-radius: 10px 10px 10px;
+    width: 24px;
+    height: 24px;
+    color: transparent;
+    opacity: 0;
+  }
+}
+
+.time-bubble-glass {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transform-origin: center center;
+  animation: loopTimeBubble 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #9ca3af;
@@ -77,20 +147,24 @@ h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
+
   @media (max-width: 1024px) {
     font-size: 36px;
     margin: 20px 0;
   }
 }
+
 h2 {
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
+
   @media (max-width: 1024px) {
     font-size: 20px;
   }
 }
+
 p {
   margin: 0;
 }

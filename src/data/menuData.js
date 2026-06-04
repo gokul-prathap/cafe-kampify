@@ -34,7 +34,7 @@ export const INITIAL_MENU = [
 
     // MEALS
     { id: 'ml1', name: 'Veg Meals', price: 80, category: 'MEALS', isVeg: true, time: '20 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
-    { id: 'ml2', name: 'Fish Meals', price: 100, category: 'MEALS', isVeg: false, time: '20 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&q=80', optionalRequests: ['Less Spicy', 'No Curry'] },
+    { id: 'ml2', name: 'Fish Meals', price: 100, category: 'MEALS', isVeg: false, time: '20 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&q=80', optionalRequests: ['Mild', 'No Curry'] },
 
     // FRUIT REFRESHERS
     { id: 'fr1', name: 'Fresh Lime', price: 40, category: 'BEVERAGES', isVeg: true, time: '10 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=80', optionalRequests: ['No Sugar', 'Less Sugar', 'No Ice'] },
@@ -74,7 +74,7 @@ export const INITIAL_MENU = [
 
     // CRAB CREATIONS
     { id: 'cc1', name: 'Crab Fry', price: 350, category: 'CRAB', isVeg: false, time: '30 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1534080391025-a7f0e6d23035?w=400&q=80' },
-    { id: 'cc2', name: 'Crab Masala', price: 350, category: 'CRAB', isVeg: false, time: '35 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=80' },
+    { id: 'cc2', name: 'Crab Masala', price: 350, category: 'CRAB', isVeg: false, time: '35 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=80', optionalRequests: ['Mild'] },
     { id: 'cc3', name: 'Crab Meat', price: 350, category: 'CRAB', isVeg: false, time: '25 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1534080391025-a7f0e6d23035?w=400&q=80' },
     { id: 'cc4', name: 'Crab Roast', price: 350, category: 'CRAB', isVeg: false, time: '35 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=80' },
 
@@ -84,36 +84,41 @@ export const INITIAL_MENU = [
     { id: 'pc3', name: 'Prawns Pollichath', price: 350, category: 'PRAWNS', isVeg: false, time: '30 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1559742811-824289511f48?w=400&q=80' },
     { id: 'pc4', name: 'Prawns Roast', price: 300, category: 'PRAWNS', isVeg: false, time: '25 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=400&q=80' },
 
-    // KERALA STYLE TILAPIA
+    // SEAFOOD (General varieties excluding regional Backwater specialities)
     { id: 'tl1', name: 'Tilapia Fry', price: 200, category: 'SEAFOOD', isVeg: false, time: '25 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=400&q=80' },
-    { id: 'tl2', name: 'Tilapia Mulak Curry', price: 200, category: 'SEAFOOD', isVeg: false, time: '30 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80' },
+    { id: 'tl2', name: 'Tilapia Mulak Curry', price: 200, category: 'SEAFOOD', isVeg: false, time: '30 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', optionalRequests: ['Mild'] },
     { id: 'tl3', name: 'Tilapia Pollichathu', price: 250, category: 'SEAFOOD', isVeg: false, time: '35 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+    { id: 'sf1', name: 'Tilapia Pollichath', price: 200, category: 'SEAFOOD', isVeg: false, time: '35 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
+    { id: 'sf2', name: 'Squid Roast', price: 400, category: 'SEAFOOD', isVeg: false, time: '25 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1534080391025-a7f0e6d23035?w=400&q=80' },
+    { id: 'sf3', name: 'King Fish Fry', price: 400, category: 'SEAFOOD', isVeg: false, time: '20 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80' },
+    { id: 'sf4', name: 'Kakka fry', price: 200, category: 'SEAFOOD', isVeg: false, time: '20 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80' },
 
-    // BACKWATER PEARL FISH
-    { id: 'pf1', name: 'Karimeen Fry', price: 300, category: 'SEAFOOD', isVeg: false, time: '25 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80' },
-    { id: 'pf2', name: 'Karimeen Mappas', price: 300, category: 'SEAFOOD', isVeg: false, time: '35 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=80' },
-    { id: 'pf3', name: 'Karimeen Manga Curry', price: 300, category: 'SEAFOOD', isVeg: false, time: '30 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80' },
-    { id: 'pf4', name: 'Karimeen Mulak Curry', price: 300, category: 'SEAFOOD', isVeg: false, time: '30 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
-    { id: 'pf5', name: 'Karimeen Pollichath', price: 350, category: 'SEAFOOD', isVeg: false, time: '35 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1559742811-824289511f48?w=400&q=80' },
-    { id: 'pf6', name: 'Karimeen Stew', price: 350, category: 'STEWS', isVeg: false, time: '40 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=80' },
-
-    // KALANJI CURRIES
-    { id: 'kj1', name: 'Kalanji Fry', price: 350, category: 'SEAFOOD', isVeg: false, time: '25 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=400&q=80' },
-    { id: 'kj2', name: 'Kalanji Mappas', price: 350, category: 'SEAFOOD', isVeg: false, time: '35 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=80' },
-    { id: 'kj3', name: 'Kalanji Manga Curry', price: 350, category: 'SEAFOOD', isVeg: false, time: '30 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80' },
-    { id: 'kj4', name: 'Kalanji Mulak Curry', price: 350, category: 'SEAFOOD', isVeg: false, time: '30 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80' },
-    { id: 'kj5', name: 'Kalanji Pollichath', price: 350, category: 'SEAFOOD', isVeg: false, time: '35 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1559742811-824289511f48?w=400&q=80' },
+    // BACKWATER FISH SPECIALS (Distinct regional varieties)
+    { id: 'pf1', name: 'Karimeen Fry', price: 300, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '25 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80' },
+    { id: 'pf2', name: 'Karimeen Mappas', price: 300, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '35 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=80' },
+    { id: 'pf3', name: 'Karimeen Manga Curry', price: 300, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '30 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'pf4', name: 'Karimeen Mulak Curry', price: 300, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '30 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'pf5', name: 'Karimeen Pollichath', price: 350, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '35 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1559742811-824289511f48?w=400&q=80' },
+    { id: 'kj1', name: 'Kalanji Fry', price: 350, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '25 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=400&q=80' },
+    { id: 'kj2', name: 'Kalanji Mappas', price: 350, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '35 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=80' },
+    { id: 'kj3', name: 'Kalanji Manga Curry', price: 350, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '30 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'kj4', name: 'Kalanji Mulak Curry', price: 350, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '30 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'kj5', name: 'Kalanji Pollichath', price: 350, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '35 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1559742811-824289511f48?w=400&q=80' },
+    { id: 'kj6', name: 'Kalanji Curry', price: 600, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '30 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'kj7', name: 'Kalanji Pollichath 600', price: 600, category: 'BACKWATER FISH SPECIALS', isVeg: false, time: '35 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1559742811-824289511f48?w=400&q=80' },
 
     // VILLAGE PORK FAVOURITES
     { id: 'pk1', name: 'Chilly Pork', price: 300, category: 'MEAT FAVOURITES', isVeg: false, time: '25 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1602404259679-14-608f82629710?w=400&q=80' },
-    { id: 'pk2', name: 'Homestyle Pork Curry', price: 300, category: 'MEAT FAVOURITES', isVeg: false, time: '35 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=400&q=80' },
+    { id: 'pk2', name: 'Homestyle Pork Curry', price: 300, category: 'MEAT FAVOURITES', isVeg: false, time: '35 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=400&q=80', optionalRequests: ['Mild'] },
     { id: 'pk3', name: 'Naadan Pork Roast', price: 350, category: 'MEAT FAVOURITES', isVeg: false, time: '30 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&q=80' },
     { id: 'pk4', name: 'Spicy Pork Vindaloo', price: 350, category: 'MEAT FAVOURITES', isVeg: false, time: '35 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&q=80' },
+    { id: 'pk5', name: 'Pork Roast', price: 300, category: 'MEAT FAVOURITES', isVeg: false, time: '30 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&q=80' },
 
     // QUACK SPECIALS
-    { id: 'dk1', name: 'Duck Curry', price: 350, category: 'MEAT FAVOURITES', isVeg: false, time: '35 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80' },
+    { id: 'dk1', name: 'Duck Curry', price: 350, category: 'MEAT FAVOURITES', isVeg: false, time: '35 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80', optionalRequests: ['Mild'] },
     { id: 'dk2', name: 'Duck Roast', price: 350, category: 'MEAT FAVOURITES', isVeg: false, time: '30 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
     { id: 'dk3', name: 'Traditional Duck Mappas', price: 400, category: 'MEAT FAVOURITES', isVeg: false, time: '40 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=80' },
+    { id: 'dk4', name: 'Duck Mappas', price: 400, category: 'MEAT FAVOURITES', isVeg: false, time: '35 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=80' },
 
     // BEEF DELIGHTS
     { id: 'bf1', name: 'Beef Dry Fry', price: 300, category: 'MEAT FAVOURITES', isVeg: false, time: '20 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&q=80' },
@@ -122,8 +127,9 @@ export const INITIAL_MENU = [
     { id: 'bf4', name: 'Beef Vindaaloo', price: 250, category: 'MEAT FAVOURITES', isVeg: false, time: '30 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&q=80' },
     { id: 'bf5', name: 'Chilly Beef', price: 250, category: 'MEAT FAVOURITES', isVeg: false, time: '20 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1602404259679-14-608f82629710?w=400&q=80' },
     { id: 'bf6', name: 'Kerala Beef Roast', price: 250, category: 'MEAT FAVOURITES', isVeg: false, time: '25 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&q=80' },
-    { id: 'bf7', name: 'Naadan Beef Curry', price: 230, category: 'MEAT FAVOURITES', isVeg: false, time: '30 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=400&q=80' },
+    { id: 'bf7', name: 'Naadan Beef Curry', price: 230, category: 'MEAT FAVOURITES', isVeg: false, time: '30 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=400&q=80', optionalRequests: ['Mild'] },
     { id: 'bf8', name: 'Uppil Ventha Beef', price: 250, category: 'MEAT FAVOURITES', isVeg: false, time: '25 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&q=80' },
+    { id: 'bf9', name: 'Beef Roast', price: 250, category: 'MEAT FAVOURITES', isVeg: false, time: '25 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&q=80' },
 
     // HEN'S SPECIALITIES
     { id: 'ch1', name: 'Butter Chicken', price: 250, category: 'MEAT FAVOURITES', isVeg: false, time: '25 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&q=80' },
@@ -134,22 +140,26 @@ export const INITIAL_MENU = [
     { id: 'ch6', name: 'Garlic Chicken', price: 300, category: 'MEAT FAVOURITES', isVeg: false, time: '22 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&q=80' },
     { id: 'ch7', name: 'Green Masala Chicken', price: 300, category: 'MEAT FAVOURITES', isVeg: false, time: '25 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=400&q=80' },
     { id: 'ch8', name: 'Kerala Chicken Fry', price: 200, category: 'MEAT FAVOURITES', isVeg: false, time: '20 min', initialRating: 4.9, available: true, image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400&q=80' },
-    { id: 'ch9', name: 'Naadan Chicken Curry', price: 200, category: 'MEAT FAVOURITES', isVeg: false, time: '25 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&q=80' },
+    { id: 'ch9', name: 'Naadan Chicken Curry', price: 200, category: 'MEAT FAVOURITES', isVeg: false, time: '25 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&q=80', optionalRequests: ['Mild'] },
     { id: 'ch10', name: 'Pepper Chicken', price: 200, category: 'MEAT FAVOURITES', isVeg: false, time: '20 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400&q=80' },
+    { id: 'ch11', name: 'Chicken Fry', price: 200, category: 'MEAT FAVOURITES', isVeg: false, time: '20 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400&q=80' },
+    { id: 'ch12', name: 'Chicken Curry', price: 200, category: 'MEAT FAVOURITES', isVeg: false, time: '25 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&q=80', optionalRequests: ['Mild'] },
 
     // VEG PREPERATIONS
     { id: 'vg1', name: 'Aloo Fry', price: 100, category: 'VEG DELIGHTS', isVeg: true, time: '15 min', initialRating: 4.2, available: true, image: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=400&q=80' },
     { id: 'vg2', name: 'Aloo Gobi', price: 100, category: 'VEG DELIGHTS', isVeg: true, time: '20 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&q=80' },
     { id: 'vg3', name: 'Chilly Gobi', price: 150, category: 'VEG DELIGHTS', isVeg: true, time: '20 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1602404259679-14-608f82629710?w=400&q=80' },
     { id: 'vg4', name: 'Chilly Paneer', price: 180, category: 'VEG DELIGHTS', isVeg: true, time: '20 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&q=80' },
-    { id: 'vg5', name: 'Dal Curry', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '15 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
+    { id: 'vg5', name: 'Dal Curry', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '15 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80', optionalRequests: ['Mild'] },
     { id: 'vg6', name: 'Dal Fry', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '15 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
     { id: 'vg7', name: 'Gobi Manchurian', price: 150, category: 'VEG DELIGHTS', isVeg: true, time: '22 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1602404259679-14-608f82629710?w=400&q=80' },
     { id: 'vg8', name: "Grandma's Veg Stew", price: 100, category: 'STEWS', isVeg: true, time: '35 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=80' },
-    { id: 'vg9', name: 'Green Peas Curry', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '15 min', initialRating: 4.1, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
-    { id: 'vg10', name: 'Kadala Curry', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '20 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
-    { id: 'vg11', name: 'Kerala Veg Kuruma', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '25 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
-    { id: 'vg12', name: 'Paneer Masala', price: 200, category: 'VEG DELIGHTS', isVeg: true, time: '25 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&q=80' },
+    { id: 'vg9', name: 'Green Peas Curry', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '15 min', initialRating: 4.1, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'vg10', name: 'Kadala Curry', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '20 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'vg11', name: 'Kerala Veg Kuruma', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '25 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'vg12', name: 'Paneer Masala', price: 200, category: 'VEG DELIGHTS', isVeg: true, time: '25 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'vg13', name: 'Veg Kuruma', price: 100, category: 'VEG DELIGHTS', isVeg: true, time: '20 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'vg14', name: 'Green Peas', price: 80, category: 'VEG DELIGHTS', isVeg: true, time: '15 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
 
     // STREET-STYLE EGG ITEMS
     { id: 'eg1', name: 'Appam with Egg', price: 50, category: 'EGG & NOODLES', isVeg: false, time: '12 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=400&q=80' },
@@ -158,27 +168,31 @@ export const INITIAL_MENU = [
     { id: 'eg4', name: "Bull's Eye (Double)", price: 35, category: 'EGG & NOODLES', isVeg: false, time: '8 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=400&q=80' },
     { id: 'eg5', name: "Bull's Eye (Single)", price: 20, category: 'EGG & NOODLES', isVeg: false, time: '6 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=400&q=80' },
     { id: 'eg6', name: 'Egg Burji', price: 50, category: 'EGG & NOODLES', isVeg: false, time: '10 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=400&q=80' },
-    { id: 'eg7', name: 'Egg Curry', price: 40, category: 'EGG & NOODLES', isVeg: false, time: '15 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80' },
+    { id: 'eg7', name: 'Egg Curry', price: 40, category: 'EGG & NOODLES', isVeg: false, time: '15 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', optionalRequests: ['Mild'] },
     { id: 'eg8', name: 'Omlette (Double)', price: 40, category: 'EGG & NOODLES', isVeg: false, time: '8 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=400&q=80' },
     { id: 'eg9', name: 'Omlette (Single)', price: 25, category: 'EGG & NOODLES', isVeg: false, time: '6 min', initialRating: 4.2, available: true, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=400&q=80' },
+    { id: 'eg10', name: "Bull's Eye", price: 35, category: 'EGG & NOODLES', isVeg: false, time: '7 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=400&q=80' },
+    { id: 'eg11', name: 'Egg Curry 50', price: 50, category: 'EGG & NOODLES', isVeg: false, time: '15 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', optionalRequests: ['Mild'] },
+    { id: 'eg12', name: 'Omlette', price: 40, category: 'EGG & NOODLES', isVeg: false, time: '8 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=400&q=80' },
 
     // NOODLE MANIA
-    { id: 'nd1', name: 'Chicken Noodles', price: 220, category: 'EGG & NOODLES', isVeg: false, time: '20 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&q=80', optionalRequests: ['Less Oil', 'Boiled Egg', 'Extra Spicy'] },
-    { id: 'nd3', name: 'Mixed Noodles', price: 230, category: 'EGG & NOODLES', isVeg: false, time: '22 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&q=80', optionalRequests: ['Less Oil', 'Boiled Egg', 'Extra Spicy'] },
+    { id: 'nd1', name: 'Chicken Noodles', price: 220, category: 'EGG & NOODLES', isVeg: false, time: '20 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&q=80', optionalRequests: ['Less Oil', 'Boiled Egg', 'Spicy'] },
+    { id: 'nd3', name: 'Mixed Noodles', price: 230, category: 'EGG & NOODLES', isVeg: false, time: '22 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&q=80', optionalRequests: ['Less Oil', 'Boiled Egg', 'Spicy'] },
     { id: 'nd6', name: 'Veg Noodles', price: 180, category: 'EGG & NOODLES', isVeg: true, time: '15 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&q=80' },
     { id: 'nd2', name: 'Egg Noodles', price: 200, category: 'EGG & NOODLES', isVeg: false, time: '18 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&q=80' },
     { id: 'nd4', name: 'Mushroom Noodles', price: 180, category: 'EGG & NOODLES', isVeg: true, time: '18 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&q=80' },
     { id: 'nd5', name: 'Paneer Noodles', price: 180, category: 'EGG & NOODLES', isVeg: true, time: '18 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&q=80' },
 
     // RICE BOWLS
-    { id: 'rb1', name: 'Chicken Fried Rice', price: 220, category: 'RICE BOWLS', isVeg: false, time: '20 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1603133872878-a364b70db654?w=400&q=80', optionalRequests: ['Less Oil', 'Boiled Egg', 'Extra Spicy'] },
-    { id: 'rb4', name: 'Mixed Fried Rice', price: 230, category: 'RICE BOWLS', isVeg: false, time: '22 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1603133872878-a364b70db654?w=400&q=80', optionalRequests: ['Less Oil', 'Boiled Egg', 'Extra Spicy'] },
+    { id: 'rb1', name: 'Chicken Fried Rice', price: 220, category: 'RICE BOWLS', isVeg: false, time: '20 min', initialRating: 4.7, available: true, image: 'https://images.unsplash.com/photo-1603133872878-a364b70db654?w=400&q=80', optionalRequests: ['Less Oil', 'Boiled Egg', 'Spicy'] },
+    { id: 'rb4', name: 'Mixed Fried Rice', price: 230, category: 'RICE BOWLS', isVeg: false, time: '22 min', initialRating: 4.8, available: true, image: 'https://images.unsplash.com/photo-1603133872878-a364b70db654?w=400&q=80', optionalRequests: ['Less Oil', 'Boiled Egg', 'Spicy'] },
     { id: 'rb2', name: 'Egg Fried Rice', price: 200, category: 'RICE BOWLS', isVeg: false, time: '18 min', initialRating: 4.5, available: true, image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
     { id: 'rb3', name: 'Kerala Rice', price: 50, category: 'RICE BOWLS', isVeg: true, time: '10 min', initialRating: 4.6, available: true, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80' },
     { id: 'rb5', name: 'Mushroom Fried Rice', price: 180, category: 'RICE BOWLS', isVeg: true, time: '18 min', initialRating: 4.3, available: true, image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
     { id: 'rb6', name: 'Paneer Fried Rice', price: 180, category: 'RICE BOWLS', isVeg: true, time: '18 min', initialRating: 4.4, available: true, image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=80' },
-    { id: 'rb7', name: 'Veg Fried Rice', price: 180, category: 'RICE BOWLS', isVeg: true, time: '15 min', initialRating: 4.2, available: true, image: 'https://images.unsplash.com/photo-1603133872878-a364b70db654?w=400&q=80' }
-,
+    { id: 'rb7', name: 'Veg Fried Rice', price: 180, category: 'RICE BOWLS', isVeg: true, time: '15 min', initialRating: 4.2, available: true, image: 'https://images.unsplash.com/photo-1603133872878-a364b70db654?w=400&q=80' },
+
+    // BREAKFAST COMBOS
     {
         id: "combo_b1",
         name: "Appam & Kadala Combo",
@@ -240,7 +254,7 @@ export const INITIAL_MENU = [
         tag: "breakfast_combo"
     },
 
-    // ==================== TODAY'S WILD SPECIALS ====================
+    // TODAY'S WILD SPECIALS
     {
         id: "combo_s1",
         name: "Cast-Iron Ribeye Stew",
@@ -278,7 +292,7 @@ export const INITIAL_MENU = [
         tag: "todays_special"
     },
 
-    // ==================== DINNER COMBOS ====================
+    // DINNER COMBOS
     {
         id: "combo_d1",
         name: "Outpost BBQ Platter",
@@ -350,8 +364,8 @@ export const INITIAL_MENU = [
         available: true,
         optionalRequests: ["No Sugar", "Less Sugar", "Extra Crispy"],
         tag: "tea_snacks"
-      },
-      {
+    },
+    {
         id: "combo_t2",
         name: "Nadan Chaya & Sukhiyan",
         price: 55,
@@ -362,8 +376,8 @@ export const INITIAL_MENU = [
         available: true,
         optionalRequests: ["Strong Tea", "Less Sugar", "+Cardamom"],
         tag: "tea_snacks"
-      },
-      {
+    },
+    {
         id: "combo_t3",
         name: "Campfire Kappa Cutlet",
         price: 80,
@@ -374,10 +388,10 @@ export const INITIAL_MENU = [
         available: true,
         optionalRequests: ["Spicy Mint Dip", "Tomato Sauce"],
         tag: "tea_snacks"
-      },
-    
-      // ==================== REFRESHING JUICES ====================
-      {
+    },
+
+    // REFRESHING JUICES
+    {
         id: "juice_1",
         name: "Fresh Kulukki Sarbath",
         price: 50,
@@ -388,8 +402,8 @@ export const INITIAL_MENU = [
         available: true,
         optionalRequests: ["No Sugar", "Less Sugar", "No Ice", "Extra Khas Khas"],
         tag: "juices"
-      },
-      {
+    },
+    {
         id: "juice_2",
         name: "Nadan Nellikka Juice",
         price: 70,
@@ -400,8 +414,8 @@ export const INITIAL_MENU = [
         available: true,
         optionalRequests: ["With Honey", "Bird's Eye Chili Hint", "No Ice"],
         tag: "juices"
-      },
-      {
+    },
+    {
         id: "juice_3",
         name: "Campfire Mint Lime Mojito",
         price: 90,
@@ -412,7 +426,7 @@ export const INITIAL_MENU = [
         available: true,
         optionalRequests: ["No Sugar", "Less Sugar", "No Ice"],
         tag: "juices"
-      }
+    }
 ];
 
 export const CATEGORIES_WITH_ICONS = [
@@ -428,7 +442,8 @@ export const CATEGORIES_WITH_ICONS = [
     { id: 'TAPIOCA', label: 'Tapioca', icon: '🪵' },
     { id: 'CRAB', label: 'Crab', icon: '🦀' },
     { id: 'PRAWNS', label: 'Prawns', icon: '🦐' },
-    { id: 'SEAFOOD', label: 'Fish Specials', icon: '🐟' },
+    { id: 'SEAFOOD', label: 'Sea Specials', icon: '🌊' },
+    { id: 'BACKWATER FISH SPECIALS', label: 'Backwater Specials', icon: '🐟' },
     { id: 'MEAT FAVOURITES', label: 'Non-Veg', icon: '🍗' },
     { id: 'VEG DELIGHTS', label: 'Veg Dishes', icon: '🥦' },
     { id: 'EGG & NOODLES', label: 'Egg & Noodles', icon: '🍳' }
