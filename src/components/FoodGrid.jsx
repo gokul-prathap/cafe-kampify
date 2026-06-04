@@ -68,19 +68,19 @@ function NoItemsState() {
           `}</style>
 
           <radialGradient id="ambientGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.15" />
-            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0" />
+            <stop offset="0%" stopColor="#FF6B35" stop-opacity="0.15" />
+            <stop offset="100%" stopColor="#FF6B35" stop-opacity="0" />
           </radialGradient>
 
           <linearGradient id="plateGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#374151" />
-            <stop offset="100%" stop-color="#1F2937" />
+            <stop offset="0%" stopColor="#374151" />
+            <stop offset="100%" stopColor="#1F2937" />
           </linearGradient>
 
           <linearGradient id="metalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#9CA3AF" />
-            <stop offset="50%" stop-color="#E5E7EB" />
-            <stop offset="100%" stop-color="#6B7280" />
+            <stop offset="0%" stopColor="#9CA3AF" />
+            <stop offset="50%" stopColor="#E5E7EB" />
+            <stop offset="100%" stopColor="#6B7280" />
           </linearGradient>
         </defs>
 

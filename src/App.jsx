@@ -8,6 +8,7 @@ import FloatingBubbles from './components/FloatingBubbles';
 import Footer from './components/Footer';
 import FoodGrid from './components/FoodGrid';
 import TopWaves from './components/TopWaves';
+import nav from '../src/assets/nav.png';
 
 export default function App() {
   const [view, setView] = useState('login'); // login | home | cart
@@ -17,6 +18,8 @@ export default function App() {
   const [ccSearch, setCcSearch] = useState('');
   const [ccOpen, setCcOpen] = useState(false);
   const [dialCode, setDialCode] = useState('+91');
+  const [fastDeliveryOnly, setFastDeliveryOnly] = useState(false);
+  const [sortBy, setSortBy] = useState(''); // '' | 'price_asc' | 'price_desc' | 'time_asc'
 
   const COUNTRY_CODES = [
     { code: '+91', flag: '🇮🇳', name: 'India', maxLen: 10 },
@@ -166,9 +169,9 @@ export default function App() {
 
   const getCartCount = () => Object.values(cart).reduce((a, b) => a + (b?.qty || 0), 0);
 
-  const processedDishes = menuItems.filter(item => {
+  const filteredDishes = menuItems.filter(item => {
     const matchSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchCat = (
       selectedCategory === 'ALL' ||
       (selectedCategory === 'BEVERAGES' && (item.categories.includes('BEVERAGES') || item.categories.includes('HOT DRINKS'))) ||
@@ -177,12 +180,29 @@ export default function App() {
       (selectedCategory === 'MEAT FAVOURITES' && (item.categories.includes('CRAB') || item.categories.includes('PRAWNS') || item.categories.includes('MEAT FAVOURITES'))) ||
       (item.categories && item.categories.includes(selectedCategory))
     );
-    
+
     const matchVeg = !vegOnly || item.isVeg;
     const matchNonVeg = !nonVegOnly || !item.isVeg;
     const matchAvail = !showActiveOnly || item.available;
-  
-    return matchSearch && matchCat && matchVeg && matchNonVeg && matchAvail;
+
+    // FAST DELIVERY: Extract number from string (e.g., "15 min" -> 15) and check if <= 15
+    const minutes = parseInt(item.time) || 0;
+    const matchFast = !fastDeliveryOnly || minutes <= 15;
+
+    return matchSearch && matchCat && matchVeg && matchNonVeg && matchAvail && matchFast;
+  });
+
+  // 2. Run the sorting logic right after filtering
+  const processedDishes = [...filteredDishes].sort((a, b) => {
+    if (sortBy === 'price_asc') return a.price - b.price;
+    if (sortBy === 'price_desc') return b.price - a.price;
+    if (sortBy === 'time_asc') {
+      return (parseInt(a.time) || 0) - (parseInt(b.time) || 0);
+    }
+    return 0; // Default sorting (no change)
+
+
+    return 0;
   });
   const handleClearCart = () => {
     setCart({});
@@ -246,6 +266,17 @@ export default function App() {
         .steam1 { animation: steamRise 2s ease-out infinite; }
         .steam2 { animation: steamRise 2s ease-out 0.6s infinite; }
         .steam3 { animation: steamRise 2s ease-out 1.2s infinite; }
+
+        .banana-leaf-bg { position: relative; overflow: hidden; }
+        .banana-leaves { position: absolute; top: 0; left: 0; width: 60%; max-width: 500px; height: auto; pointer-events: none; z-index: 1; }
+        .leaf-group { transform-origin: 0% 0%; }
+        .leaf-one { animation: naturalSway 7s ease-in-out infinite alternate; }
+        .leaf-two { animation: naturalSway 9s ease-in-out -2s infinite alternate-reverse; }
+        @keyframes naturalSway {
+          0% { transform: rotate(0deg) skewX(0deg) scale(1); }
+          50% { transform: rotate(3deg) skewX(1deg) scale(1.02); }
+          100% { transform: rotate(-2deg) skewX(-1deg) scale(0.99); }
+        }
       `}</style>
 
       {view === 'login' ? (
@@ -347,7 +378,7 @@ export default function App() {
         </div>
       ) : (
         <div style={styles.mainFeed}>
-          <div style={styles.topGreenSection}>
+          <div style={styles.topGreenSection} className="animated-header-bg">
             <header style={styles.brandHeader}>
               <div>
                 <p style={styles.welcomeText}>Hello, {username}!</p>
@@ -360,25 +391,40 @@ export default function App() {
                 </div>
               </div>
             </header>
-
+            <PromoBanners ordered={ordered} secondsLeft={secondsLeft} cart={cart} updateCart={updateCart} handleRateItem={handleRateItem} />
+                    <style>{`
+          @keyframes panBackground {
+            0% { background-position: left top; }
+            50% { background-position: right top; }
+            100% { background-position: left top; }
+          }
+          .animated-header-bg {
+            animation: panBackground 33s ease-in-out infinite;
+          }
+        `}</style>  
             <div style={styles.searchRowContainer}>
               <div style={styles.searchBarWrapper}>
+                {/* Search icon stays cleanly on the left side */}
                 <span style={styles.searchIcon}>🔍</span>
                 <input
                   type="text"
-                  placeholder="Search for 'Pizza' or Stews..."
+                  placeholder="Search for 'Puttu' or Stews..."
+                  color='white'
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   style={styles.searchInputField}
                 />
               </div>
 
+              {/* NON-VEG TOGGLE BUTTON */}
               <div
                 onClick={() => { setNonVegOnly(!nonVegOnly); if (!nonVegOnly) setVegOnly(false); }}
                 style={{
                   ...styles.vegToggleSquare,
-                  backgroundColor: nonVegOnly ? '#c62828' : '#fff',
+                  backgroundColor: nonVegOnly ? '#c62828' : 'rgba(255, 255, 255, 0.5)', // Matches blurred look when inactive
+                  backdropFilter: 'blur(10px)',
                   display: 'flex',
+                  border: '5px solid rgba(255, 255, 255, 0.25)',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -386,39 +432,94 @@ export default function App() {
                   padding: '8px'
                 }}
               >
-                <span style={{ fontSize: '10px', fontWeight: '800', color: nonVegOnly ? '#fff' : '#444', lineHeight: '1' }}>
+                <span style={{ fontSize: '10px', fontWeight: '800', color: '#fff', lineHeight: '1' }}>
                   NON
                 </span>
-                <div style={{ ...styles.vegDotBox, borderColor: nonVegOnly ? '#fff' : '#c62828', margin: 0 }}>
+                <div style={{ ...styles.vegDotBox, borderColor: '#fff', margin: 0, backgroundColor: 'white' }}>
                   <div style={{ ...styles.vegInnerDot, backgroundColor: '#c62828' }} />
                 </div>
               </div>
 
+              {/* VEG TOGGLE BUTTON */}
               <div
                 onClick={() => { setVegOnly(!vegOnly); if (!vegOnly) setNonVegOnly(false); }}
-                style={{ ...styles.vegToggleSquare, backgroundColor: vegOnly ? '#10805c' : '#fff' }}
+                style={{
+                  ...styles.vegToggleSquare,
+                  backgroundColor: vegOnly ? '#2e7d32' : 'rgba(255, 255, 255, 0.5)', // Matches blurred look when inactive
+                  backdropFilter: 'blur(10px)',
+                  display: 'flex',
+                  border: '5px solid rgba(255, 255, 255, 0.25)',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '8px'
+                }}
               >
-                <span style={{ fontSize: '10px', fontWeight: '800', color: vegOnly ? '#fff' : '#444' }}>VEG</span>
-                <div style={{ ...styles.vegDotBox, borderColor: vegOnly ? '#fff' : '#2e7d32' }}>
+                <span style={{ fontSize: '10px', fontWeight: '800', color: '#fff', lineHeight: '1' }}>
+                  VEG
+                </span>
+                <div style={{ ...styles.vegDotBox, borderColor: '#fff', margin: 0, backgroundColor: 'white' }}>
                   <div style={{ ...styles.vegInnerDot, backgroundColor: '#2e7d32' }} />
                 </div>
               </div>
             </div>
 
-            <PromoBanners ordered={ordered} secondsLeft={secondsLeft} cart={cart} updateCart={updateCart} handleRateItem={handleRateItem} />
+
           </div>
 
           <div style={styles.bottomWhiteSection}>
             <CategoryTabs selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
 
-            <div style={styles.filterMenuRow}>
+            {/* Horizontally scrollable row for filters to keep UI clean and scannable */}
+            <div className="hide-scroll" style={{ display: 'flex', gap: '8px', overflowX: 'auto', padding: '4px 0 12px 0', width: '100%', WebkitOverflowScrolling: 'touch' }}>
+
+              {/* Active Stock Filter */}
               <button
                 onClick={() => setShowActiveOnly(!showActiveOnly)}
-                style={{ ...styles.auxFilterBtn, backgroundColor: showActiveOnly ? '#04432f' : '#f1f5f9', color: showActiveOnly ? '#fff' : '#333' }}
+                style={{ ...styles.auxFilterBtn, backgroundColor: showActiveOnly ? '#04432f' : '#f1f5f9', color: showActiveOnly ? '#fff' : '#333', whiteSpace: 'nowrap' }}
               >
-                📦 Active Stock Only
+                📦 Active Stock
               </button>
-              <span style={{ fontSize: '12px', color: '#666' }}>Items: {processedDishes.length}</span>
+
+              {/* Fast Deliveries Filter (Under 15 min) */}
+              <button
+                onClick={() => setFastDeliveryOnly(!fastDeliveryOnly)}
+                style={{ ...styles.auxFilterBtn, backgroundColor: fastDeliveryOnly ? '#04432f' : '#f1f5f9', color: fastDeliveryOnly ? '#fff' : '#333', whiteSpace: 'nowrap' }}
+              >
+                ⚡ Fast Delivery (&lt;15m)
+              </button>
+
+              {/* Sort by Time Filter */}
+              <button
+                onClick={() => setSortBy(sortBy === 'time_asc' ? '' : 'time_asc')}
+                style={{ ...styles.auxFilterBtn, backgroundColor: sortBy === 'time_asc' ? '#04432f' : '#f1f5f9', color: sortBy === 'time_asc' ? '#fff' : '#333', whiteSpace: 'nowrap' }}
+              >
+                🕒 Quickest Time
+              </button>
+
+              {/* Sort by Price Low to High */}
+              <button
+                onClick={() => setSortBy(sortBy === 'price_asc' ? '' : 'price_asc')}
+                style={{ ...styles.auxFilterBtn, backgroundColor: sortBy === 'price_asc' ? '#04432f' : '#f1f5f9', color: sortBy === 'price_asc' ? '#fff' : '#333', whiteSpace: 'nowrap' }}
+              >
+                Price ▲
+              </button>
+
+              {/* Sort by Price High to Low */}
+              <button
+                onClick={() => setSortBy(sortBy === 'price_desc' ? '' : 'price_desc')}
+                style={{ ...styles.auxFilterBtn, backgroundColor: sortBy === 'price_desc' ? '#04432f' : '#f1f5f9', color: sortBy === 'price_desc' ? '#fff' : '#333', whiteSpace: 'nowrap' }}
+              >
+                Price ▼
+              </button>
+            </div>
+
+            {/* Total Item Count Bar */}
+            <div style={{ ...styles.filterMenuRow, marginTop: '4px' }}>
+              <span style={{ fontSize: '12px', color: '#666', fontWeight: '600' }}>
+                Showing {processedDishes.length} delicious item{processedDishes.length !== 1 ? 's' : ''}
+              </span>
             </div>
 
             <FoodGrid
@@ -470,7 +571,7 @@ const styles = {
   ccItem: { display: 'flex', alignItems: 'center', gap: '8px', padding: '9px 14px', cursor: 'pointer', color: '#333', backgroundColor: '#fff' },
   phoneInput: { flex: 1, padding: '18px 20px', borderRadius: '30px', border: 'none', fontSize: '15px', fontWeight: '600', outline: 'none', backgroundColor: '#fff', color: '#333' },
   mainFeed: { display: 'flex', flexDirection: 'column', width: '100%' },
-  topGreenSection: { backgroundColor: '#04432f', padding: '16px 16px 8px 16px' },
+  topGreenSection: { backgroundImage: `url(${nav})`, backgroundSize: '120% auto', backgroundRepeat: 'no-repeat', width: '100%', position: 'relative', overflow: 'hidden' },
   brandHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff', marginBottom: '16px' },
   welcomeText: { fontSize: '12px', color: '#a3b8b0' },
   brandName: { fontSize: '24px', fontWeight: '900' },
@@ -478,9 +579,7 @@ const styles = {
   cartFABIcon: { fontSize: '22px', cursor: 'pointer', position: 'relative', backgroundColor: 'rgba(255,255,255,0.15)', padding: '6px', borderRadius: '50%' },
   cartCountBadge: { position: 'absolute', top: '-4px', right: '-4px', backgroundColor: '#ef4444', color: '#fff', borderRadius: '50%', width: '16px', height: '16px', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700' },
   searchRowContainer: { display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px', width: '100%' },
-  searchBarWrapper: { flex: 1, backgroundColor: '#fff', borderRadius: '30px', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '8px' },
-  searchIcon: { color: '#888', fontSize: '16px' },
-  searchInputField: { flex: 1, border: 'none', outline: 'none', fontSize: '14px', backgroundColor: 'transparent', color: '#333' },
+  arrowButton: { position: "absolute", top: "55%", transform: "translateY(-50%)", zIndex: 120, background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.12)", borderRadius: "50%", color: "#ffffff", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", cursor: "pointer", backdropFilter: "blur(10px)", boxShadow: "0 0 10px rgba(255,255,255,0.1)", transition: "all 0.2s ease-in-out", outline: "none" },
   vegToggleSquare: { width: '48px', height: '44px', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' },
   vegDotBox: { width: '12px', height: '12px', border: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' },
   vegInnerDot: { width: '6px', height: '6px', borderRadius: '50%' },
@@ -491,5 +590,8 @@ const styles = {
   stickyOrderInfo: { display: 'flex', flexDirection: 'column' },
   stickyCount: { color: '#fff', fontWeight: '800', fontSize: '15px' },
   stickyLabel: { color: '#a3b8b0', fontSize: '11px' },
-  stickyOrderBtn: { backgroundColor: '#14a375', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '12px', fontWeight: '800', fontSize: '14px', cursor: 'pointer' }
+  stickyOrderBtn: { backgroundColor: '#14a375', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '12px', fontWeight: '800', fontSize: '14px', cursor: 'pointer' },
+  searchBarWrapper: { display: 'flex', alignItems: 'center', width: '100%', position: 'relative', backgroundColor: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.25)', padding: '10px 14px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)', boxSizing: 'border-box' },
+  searchIcon: { fontSize: '16px', marginRight: '10px', color: 'rgba(255, 255, 255, 0.7)', display: 'flex', alignItems: 'center', userSelect: 'none', pointerEvents: 'none' },
+  searchInputField: { flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: '14px', fontWeight: '500', color: '#ffffff', width: '100%', padding: 0, margin: 0 }
 };

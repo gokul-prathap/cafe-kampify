@@ -119,6 +119,12 @@ export default function CartPage({ cart = {}, menuItems, updateCart, onBack, use
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+  const getPreparationMinutes = (dish) => {
+    if (!dish?.time) return 45;
+
+    const match = String(dish.time).match(/(\d+)/);
+    return match ? parseInt(match[1], 10) : 45;
+  };
 
   const storedOrders = JSON.parse(localStorage.getItem('kampify_orders_list')) || [];
   const latestOrder = storedOrders.sort((a, b) => b.timestamp - a.timestamp)[0];
@@ -139,49 +145,60 @@ export default function CartPage({ cart = {}, menuItems, updateCart, onBack, use
     return sum + (dish ? dish.price * qty : 0);
   }, 0);
 
-  // UPDATED: Includes customized specifications in the WhatsApp slip text
   const checkoutViaWhatsApp = () => {
     const orderId = `KFY-${Date.now().toString().slice(-6)}`;
-
+  
     let orderSlip = `*
-    
-    
-    ＣＡＦＥ ＫＡＭＰＩＦＹ*
-
-━━━━━━━━━━━━━━━━━━━━━━
-
-🆔 *Order:* ${orderId}
-👤 *Customer:* ${username || "Guest"}
-
-━━━━━━━━━━━━━━━━━━━━━━
-📋 *ORDER ITEMS*
-━━━━━━━━━━━━━━━━━━━━━━
-`;
-
+      
+      
+      ＣＡＦＥ ＫＡＭＰＩＦＹ*
+  
+  ━━━━━━━━━━━━━━━━━━━━━━
+  
+  🆔 *Order:* ${orderId}
+  👤 *Customer:* ${username || "Guest"}
+  
+  ━━━━━━━━━━━━━━━━━━━━━━
+  📋 *ORDER ITEMS*
+  ━━━━━━━━━━━━━━━━━━━━━━
+  `;
+  
     const snapshotItems = [];
     const instructionLines = [];
-
+  
+    let currentOrderRequiredMinutes = 0;
+  
     activeCartEntries.forEach(([key, cartObj]) => {
       const baseId = cartObj?.baseId || key;
       const itemQuantity = cartObj?.qty ?? 0;
       const selectedOptions = cartObj?.options || [];
-
+  
       const dish = menuItems.find(m => m.id === baseId);
       if (!dish) return;
-
+  
+      const prepMinutes = getPreparationMinutes(dish);
+  
+      currentOrderRequiredMinutes = Math.max(
+        currentOrderRequiredMinutes,
+        prepMinutes
+      );
+  
       const vegIcon = dish.isVeg ? "🟢" : "🔴";
-      const optionsString = selectedOptions.length > 0 ? ` (${selectedOptions.join(', ')})` : '';
-
+      const optionsString =
+        selectedOptions.length > 0
+          ? ` (${selectedOptions.join(', ')})`
+          : '';
+  
       orderSlip += `
-${vegIcon} ${dish.name}${optionsString} → *${itemQuantity}*
-`;
-
+  ${vegIcon} ${dish.name}${optionsString} → *${itemQuantity}*
+  `;
+  
       if (selectedOptions.length > 0) {
         instructionLines.push(
           `• ${itemQuantity} ${dish.name} — ${selectedOptions.join(", ")}`
         );
       }
-
+  
       snapshotItems.push({
         id: baseId,
         name: dish.name + optionsString,
@@ -189,47 +206,97 @@ ${vegIcon} ${dish.name}${optionsString} → *${itemQuantity}*
         priceTotal: dish.price * itemQuantity
       });
     });
-
+  
     if (instructionLines.length > 0) {
       orderSlip += `
-
-━━━━━━━━━━━━━━━━━━━━━━
-⚠️ *SPECIAL INSTRUCTIONS*
-━━━━━━━━━━━━━━━━━━━━━━
-
-${instructionLines.join("\n")}
-`;
+  
+  ━━━━━━━━━━━━━━━━━━━━━━
+  ⚠️ *SPECIAL INSTRUCTIONS*
+  ━━━━━━━━━━━━━━━━━━━━━━
+  
+  ${instructionLines.join("\n")}
+  `;
     }
-
+  
     orderSlip += `
-
-━━━━━━━━━━━━━━━━━━━━━━
-💰 *BILL SUMMARY*
-━━━━━━━━━━━━━━━━━━━━━━
-
-🛒 Total Items: ${snapshotItems.reduce((sum, item) => sum + item.qty, 0)}
-
-💵 *TOTAL BILL: ₹${totalCost}*
-
-━━━━━━━━━━━━━━━━━━━━━━
-☕ *CAFE KAMPIFY*
-━━━━━━━━━━━━━━━━━━━━━━
-`;
-
+  
+  ━━━━━━━━━━━━━━━━━━━━━━
+  💰 *BILL SUMMARY*
+  ━━━━━━━━━━━━━━━━━━━━━━
+  
+  🛒 Total Items: ${snapshotItems.reduce((sum, item) => sum + item.qty, 0)}
+  
+  💵 *TOTAL BILL: ₹${totalCost}*
+  
+  ━━━━━━━━━━━━━━━━━━━━━━
+  ☕ *CAFE KAMPIFY*
+  ━━━━━━━━━━━━━━━━━━━━━━
+  `;
+  
+    // --------------------------------------------------
+    // SMART TIMER LOGIC
+    // --------------------------------------------------
+  
+    const now = Date.now();
+  
+    const existingOrders =
+      JSON.parse(localStorage.getItem("kampify_orders_list")) || [];
+  
+    const activeOrders = existingOrders.filter(ord => {
+      const elapsed = Math.floor((now - ord.timestamp) / 1000);
+      return elapsed < ord.durationSeconds;
+    });
+  
+    let activeRemainingMinutes = 0;
+  
+    activeOrders.forEach(ord => {
+      const elapsed = Math.floor((now - ord.timestamp) / 1000);
+      const remainingMinutes = Math.ceil(
+        (ord.durationSeconds - elapsed) / 60
+      );
+  
+      activeRemainingMinutes = Math.max(
+        activeRemainingMinutes,
+        remainingMinutes
+      );
+    });
+  
+    let finalPreparationMinutes;
+  
+    if (activeRemainingMinutes > currentOrderRequiredMinutes) {
+      finalPreparationMinutes = activeRemainingMinutes;
+    } else {
+      finalPreparationMinutes = currentOrderRequiredMinutes;
+    }
+  
+    // Global cap = 45 min
+    finalPreparationMinutes = Math.min(
+      45,
+      Math.max(1, finalPreparationMinutes)
+    ); 
+  
     const newOrder = {
       id: orderId,
-      timestamp: Date.now(),
-      durationSeconds: 2700,
+      timestamp: now,
+      durationSeconds: finalPreparationMinutes * 60,
       total: totalCost,
       items: snapshotItems
     };
-
+  
     const updatedOrdersList = [newOrder, ...orders];
+  
     setOrders(updatedOrdersList);
-    localStorage.setItem("kampify_orders_list", JSON.stringify(updatedOrdersList));
-
-    window.open(`https://wa.me/919901299899?text=${encodeURIComponent(orderSlip)}`, "_blank");
-
+  
+    localStorage.setItem(
+      "kampify_orders_list",
+      JSON.stringify(updatedOrdersList)
+    );
+  
+    window.open(
+      `https://wa.me/919901299899?text=${encodeURIComponent(orderSlip)}`,
+      "_blank"
+    );
+  
     if (typeof clearCart === "function") {
       clearCart();
     }
@@ -303,7 +370,7 @@ ${instructionLines.join("\n")}
         .generic-timer-banner { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-radius: 12px; border: 1px solid #ffeeba; margin-bottom: 16px; animation: alertPulse 2.5s ease-in-out infinite; }
       `}</style>
 
-      <div style={styles.scrollContainer}>
+      <div style={styles.scrollContainer} >
         <header style={styles.header}>
           <button onClick={onBack} style={styles.backBtn}>⬅️ Back to Menu</button>
           <h2 style={styles.title}>Your Basket</h2>
@@ -319,7 +386,7 @@ ${instructionLines.join("\n")}
                 </span>
               </div>
             )}
-            <h3 style={styles.emptyHeading}>Your cart is empty</h3>
+            <h3 style={styles.emptyHeading} >Your cart is empty</h3>
             <p style={styles.emptySubtext}>Delicious Kerala delicacies are waiting to be paddled down to your table!</p>
             <button onClick={onBack} style={styles.browseBtn}>Browse Menu</button>
           </div>
