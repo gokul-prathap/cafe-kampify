@@ -168,14 +168,16 @@ export default function App() {
 
   const processedDishes = menuItems.filter(item => {
     const matchSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+    
     const matchCat = (
       selectedCategory === 'ALL' ||
-      (selectedCategory === 'BEVERAGES' && (item.category === 'BEVERAGES' || item.category === 'HOT DRINKS')) ||
-      (selectedCategory === 'SEAFOOD' && (item.category === 'SEAFOOD' || item.category === 'BACKWATER FISH SPECIALS')) ||
+      (selectedCategory === 'BEVERAGES' && (item.categories.includes('BEVERAGES') || item.categories.includes('HOT DRINKS'))) ||
+      (selectedCategory === 'SEAFOOD' && (item.categories.includes('SEAFOOD') || item.categories.includes('BACKWATER FISH SPECIALS'))) ||
       (selectedCategory === 'STEWS' && item.name.toLowerCase().includes('stew')) ||
-      (selectedCategory === 'MEAT FAVOURITES' && (item.category === 'CRAB' || item.category === 'PRAWNS')) ||
-      item.category === selectedCategory
+      (selectedCategory === 'MEAT FAVOURITES' && (item.categories.includes('CRAB') || item.categories.includes('PRAWNS') || item.categories.includes('MEAT FAVOURITES'))) ||
+      (item.categories && item.categories.includes(selectedCategory))
     );
+    
     const matchVeg = !vegOnly || item.isVeg;
     const matchNonVeg = !nonVegOnly || !item.isVeg;
     const matchAvail = !showActiveOnly || item.available;
@@ -478,7 +480,7 @@ const styles = {
   searchRowContainer: { display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '16px', width: '100%' },
   searchBarWrapper: { flex: 1, backgroundColor: '#fff', borderRadius: '30px', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '8px' },
   searchIcon: { color: '#888', fontSize: '16px' },
-  searchInputField: { flex: 1, border: 'none', outline: 'none', fontSize: '14px', backgroundColor: 'transparent' },
+  searchInputField: { flex: 1, border: 'none', outline: 'none', fontSize: '14px', backgroundColor: 'transparent', color: '#333' },
   vegToggleSquare: { width: '48px', height: '44px', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' },
   vegDotBox: { width: '12px', height: '12px', border: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' },
   vegInnerDot: { width: '6px', height: '6px', borderRadius: '50%' },

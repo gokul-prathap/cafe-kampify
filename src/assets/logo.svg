@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Ambient Glow Background (Optional - Container is Transparent) -->
+  <circle cx="50" cy="50" r="46" fill="#111827" />
+
+  <g transform="translate(5, 0)">
+    <!-- The "K" Spine (Stylized Modern Coffee Mug Silhouette) -->
+    <path d="M 32,25 L 32,75" stroke="#FF6B35" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M 32,35 C 18,35 18,65 32,65" stroke="#FF6B35" stroke-width="6" stroke-linecap="round" fill="none"/>
+    
+    <!-- The "K" Upper Leg (Rising Flame / Vapor) -->
+    <path d="M 36,52 C 45,48 55,35 58,22 C 62,38 48,48 38,52" fill="#FFB703" stroke-linecap="round"/>
+    
+    <!-- The "K" Lower Leg (Campfire Log / Ember) -->
+    <path d="M 34,52 L 62,74 C 64,75 66,73 65,71 L 44,54" fill="#E65F2B"/>
+    
+    <!-- Secondary Inner Spark Accent -->
+    <path d="M 44,42 C 48,38 52,32 54,26 C 54,34 48,40 44,42" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+</svg>
